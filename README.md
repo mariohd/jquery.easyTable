@@ -9,12 +9,13 @@ Options !!
 ==============
 This plugin is don`t have any default action, so it will depend the parameter while calling the method.
 
-The available actions are : `fixedHead`, `addRow`, `removeRow`, `removeAllRows`.
+The available actions are : `fixedHead`, `refixHead`, `addRow`, `removeRow`, `removeAllRows`.
 
 Some actions, need other parameters to do his jobs.
 ```
     Actions usage parameters
         ├── fixedHead
+        ├── refixHead
         ├── addRow
         |   ├── columnsValues
         │   ├── { columnsNames }  
