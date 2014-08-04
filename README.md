@@ -9,13 +9,13 @@ Options !!
 ==============
 This plugin is don`t have any default action, so it will depend the parameter while calling the method.
 
-The available actions are : `fixedHead`, `refixHead`, `addRow`, `removeRow`, `removeAllRows`.
+The available actions are : `fixedHead`, `undoFixedHeader`, `addRow`, `removeRow`, `removeAllRows`.
 
 Some actions, need other parameters to do his jobs.
 ```
     Actions usage parameters
         ├── fixedHead
-        ├── refixHead
+        ├── undoFixedHeader
         ├── addRow
         |   ├── columnsValues
         │   ├── { columnsNames }  
@@ -45,22 +45,16 @@ Just like any other JQuery plugin, just need and JQuery object and a method call
 
 ```html
     // To fixed header of a table.
-    $('#easyTable-example').easyTable( { actions: ['fixedHead']  } );  
+    $('#easyTable-example').easyTable( 'fixedHead' );  
 
     //Adding a row.
-    $('#easyTable-example').easyTable(
-                    { actions: ['addRow'],
-                      columnsValues: ["first", "...", "N columns" ]
-                    } );
+    $('#easyTable-example').easyTable('addRow', { columnsValues: ["first", "...", "N columns" ] } );
 
     //Remove some rows.
-    $('#easyTable-example').easyTable(
-                    { actions: ['removeRow'],
-                      indexes: [ 0, 2, 4, 6 ]
-                    } );  
+    $('#easyTable-example').easyTable( 'removeRow', { indexes: [ 0, 2, 4, 6 ] } );  
 
     //Remove entire content.
-     $('#easyTable-example').easyTable( { actions: ['removeAllRows'] } );  
+     $('#easyTable-example').easyTable( 'removeAllRows' );  
 
 ```
 

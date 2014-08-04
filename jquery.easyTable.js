@@ -1,5 +1,5 @@
 ;(function($) {
-  $.fn.easyTable = function( options ) {
+  $.fn.easyTable = function( action , options ) {
     var opts = $.extend( {}, $.fn.easyTable.defaults, options );
 
     var $this = $(this);
@@ -7,24 +7,22 @@
                   return $(this).css('overflow') == 'auto';
                });
 
-    opts.actions.some( function ( action ) {
-        if ( action == 'fixedHead' ) {
-          var $t_fixed;
-          _fixedHeader();
-          _resizeFixedHeader();
-          $(window).resize(_resizeFixedHeader);
-        }
-
-        if ( action == 'refixHead' ) {
-          var $t_fixed = $("#" + $this.attr('id') + '-fixedClone');
-          var header = $t_fixed.find('thead');
-          var body = $this.find('tbody');
-          $scrollableFather.unwrap();
-          header.insertBefore(body);
-          $t_fixed.remove();
-        }
-
-        if ( action == 'addRow' ) {
+      switch ( action ) {
+        case 'fixedHead':
+            var $t_fixed;
+            _fixedHeader();
+            _resizeFixedHeader();
+            $(window).resize(_resizeFixedHeader);
+            break;
+        case 'undoFixedHead':
+            var $t_fixed = $("#" + $this.attr('id') + '-fixedClone');
+            var header = $t_fixed.find('thead');
+            var body = $this.find('tbody');
+            $scrollableFather.unwrap();
+            header.insertBefore(body);
+            $t_fixed.remove();
+            break;
+        case 'addRow':
           if (typeof opts.beforeAdd == 'function'){
             opts.beforeAdd.call( $this );
           }
@@ -34,9 +32,9 @@
           if (typeof opts.afterAdd == 'function'){
             opts.afterAdd.call( $this, $tr );
           }
-        }
 
-        if ( action == 'removeRow' ) {
+          break;
+        case 'removeRow':
           if (typeof opts.beforeDelete == 'function'){
             opts.beforeDelete.call( $this );
           }
@@ -49,9 +47,9 @@
           if (typeof opts.afterDelete == 'function'){
             opts.afterDelete.call( $this );
           }
-        }
 
-        if ( action == 'removeAllRows' ) {
+          break;
+        case 'removeAllRows':
           if (typeof opts.beforeDeleteAll == 'function'){
             opts.beforeDeleteAll.call( $this );
           }
@@ -61,10 +59,9 @@
           if (typeof opts.afterDeleteAll == 'function'){
             opts.afterDeleteAll.call( $this );
           }
-        }
 
-
-    });
+          break;
+      }
 
     function _fixedHeader() {
         $scrollableFather.wrap('<div id="container-easyTable" />');
@@ -122,11 +119,11 @@
         $newRow.append($td);
 
         if ( typeof opts.columnsNames[index] != 'undefined' ) {
-          $input.attr('name', columnsNames[index]);
+          $td.attr('name', opts.columnsNames[index]);
         }
 
         if ( typeof opts.columnsIDs[index] != 'undefined' ) {
-          $input.attr('id', columnsIDs[index]);
+          $td.attr('id', opts.columnsIDs[index]);
         }
 
       });
@@ -145,7 +142,6 @@
 
   $.fn.easyTable.defaults = {
     indexes: [],
-    actions: [],
     columnsValues: [],
     columnsNames: [],
     columnsIDs: []
