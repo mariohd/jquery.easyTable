@@ -3,7 +3,7 @@
     var $this = $(this);
     var opts = $.extend( {}, $.fn.easyTable.defaults, options );
 	  var scrollableFather = $this.parents().filter( function() {
-                  return $(this).css('overflow-y') == 'auto';
+                  return $(this).css('overflow') == 'auto';
                });
 
     opts.actions.some( function ( action ) {
@@ -12,6 +12,19 @@
           _fixedHeader();
           _resizeFixedHeader();
           $(window).resize(_resizeFixedHeader);
+        }
+
+        if ( action == 'refixHead' ) {
+          id = $this.attr("id");
+          $fixedTable = $('#' + id + "-fixedClone");
+          $head = $fixedTable.find('thead');
+          $head.insertBefore($this.find('tbody'));
+          var originalTable = $('#container-easyTable').html();
+          var easyTableContainer = $('#container-easyTable');
+          easyTableContainer.hide();
+          $(originalTable).insertAfter(easyTableContainer);
+          easyTableContainer.remove();
+          $fixedTable.remove();
         }
 
         if ( action == 'addRow' ) {
@@ -53,6 +66,7 @@
           }
         }
 
+
     });
 
     function _fixedHeader() {
@@ -64,13 +78,11 @@
     }
 
     function _resizeFixedHeader() {
+
         $t_fixed.find("th").each(function(index) {
           $(this).css("width",$this.find("th").eq(index).css('width'));
         });
 
-        $t_fixed.css('margin-left', $this.css('margin-left'));
-        $t_fixed.css('margin-right', $this.css('margin-right'));
-    		$t_fixed.css('width', scrollableFather.width() - getScrollbarWidth());
     		$this.find("thead").remove();
     		$this.find("tr").first().children().each( function (index) {
     			$(this).css("width", $t_fixed.find("th").eq(index).css('width'));
