@@ -1,30 +1,27 @@
 ;(function($) {
   $.fn.easyTable = function( options ) {
-    var $this = $(this);
     var opts = $.extend( {}, $.fn.easyTable.defaults, options );
-	  var scrollableFather = $this.parents().filter( function() {
+
+    var $this = $(this);
+    var $scrollableFather = $this.parents().filter( function() {
                   return $(this).css('overflow') == 'auto';
                });
 
     opts.actions.some( function ( action ) {
         if ( action == 'fixedHead' ) {
-          var	$t_fixed;
+          var $t_fixed;
           _fixedHeader();
           _resizeFixedHeader();
           $(window).resize(_resizeFixedHeader);
         }
 
         if ( action == 'refixHead' ) {
-          id = $this.attr("id");
-          $fixedTable = $('#' + id + "-fixedClone");
-          $head = $fixedTable.find('thead');
-          $head.insertBefore($this.find('tbody'));
-          var originalTable = $('#container-easyTable').html();
-          var easyTableContainer = $('#container-easyTable');
-          easyTableContainer.hide();
-          $(originalTable).insertAfter(easyTableContainer);
-          easyTableContainer.remove();
-          $fixedTable.remove();
+          var $t_fixed = $("#" + $this.attr('id') + '-fixedClone');
+          var header = $t_fixed.find('thead');
+          var body = $this.find('tbody');
+          $scrollableFather.unwrap();
+          header.insertBefore(body);
+          $t_fixed.remove();
         }
 
         if ( action == 'addRow' ) {
@@ -70,10 +67,10 @@
     });
 
     function _fixedHeader() {
-        scrollableFather.wrap('<div id="container-easyTable" />');
+        $scrollableFather.wrap('<div id="container-easyTable" />');
         $t_fixed = $this.clone();
         $t_fixed.attr('id', $t_fixed.attr('id') + '-fixedClone');
-        $t_fixed.find("tbody").remove().end().addClass("fixedEasyTable").insertBefore(scrollableFather);
+        $t_fixed.find("tbody").remove().end().addClass("fixedEasyTable").insertBefore($scrollableFather);
         _resizeFixedHeader();
     }
 
