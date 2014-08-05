@@ -5,13 +5,13 @@ The intent of this plugin is to help the development while using tables.
 Has some quicker solutions for some commons and tricky problems.
 This plugin uses JQuery, one of the most important javascript`s library.
 
-Options !!
+How does it work...
 ==============
-This plugin is don`t have any default action, so it will depend the parameter while calling the method.
+This plugin don`t have any default action, so it will depend the parameter while calling the method.
 
 The available actions are : `fixedHead`, `undoFixedHeader`, `addRow`, `removeRow`, `removeAllRows`.
 
-Some actions, need other parameters to do his jobs.
+Some actions also need other parameters to do his jobs.
 ```
     Actions usage parameters
         ├── fixedHead
@@ -24,11 +24,12 @@ Some actions, need other parameters to do his jobs.
         │   └── indexes
         └── removeAllRows
 ```
+Those with { paramenterName } are optional to the action.
 
 How to Apply the plugin?
 ================
 
-Just import the JS file like any other else!
+Import the JS file like any other else!
 Just remember to put easyTable import after JQuery import ;)
 
 ```html
@@ -41,7 +42,7 @@ Just remember to put easyTable import after JQuery import ;)
 Usage
 ==============
 
-Just like any other JQuery plugin, just need and JQuery object and a method call!
+As any other JQuery plugin, just need and JQuery object and a method call!
 
 ```html
     // To fixed header of a table.
@@ -58,4 +59,4 @@ Just like any other JQuery plugin, just need and JQuery object and a method call
 
 ```
 
-This plugin still under development, any help is welcome!
+This plugin still under development, any help will be welcome!
