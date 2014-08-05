@@ -29,7 +29,7 @@ How to Apply the plugin?
 ================
 
 Just import the JS file like any other else!
-Just remenber to put import line after JQuery import ;)
+Just remember to put easyTable import after JQuery import ;)
 
 ```html
    <script type="text/javascript" src="jquery-1.11.1.js"></script>
