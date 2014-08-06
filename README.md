@@ -9,13 +9,13 @@ How does it work...
 ==============
 This plugin don`t have any default action, so it will depend the parameter while calling the method.
 
-The available actions are : `fixedHead`, `undoFixedHeader`, `addRow`, `removeRow`, `removeAllRows`.
+The available actions are : `fixedHead`, `undoFixedHead`, `addRow`, `removeRow`, `removeAllRows`.
 
 Some actions also need other parameters to do his jobs.
 ```
     Actions usage parameters
         ├── fixedHead
-        ├── undoFixedHeader
+        ├── undoFixedHead
         ├── addRow
         |   ├── columnsValues
         │   ├── { columnsNames }  
