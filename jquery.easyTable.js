@@ -1,26 +1,20 @@
 ;(function($) {
   $.fn.easyTable = function( action , options ) {
     var opts = $.extend( {}, $.fn.easyTable.defaults, options );
-
+    
     var $this = $(this);
     var $scrollableFather = $this.parents().filter( function() {
                   return $(this).css('overflow') == 'auto';
                });
+    var $headerFixed = $("#" + $this.attr('id') + '-fixedClone');
 
       switch ( action ) {
         case 'fixedHead':
-            var $t_fixed;
             _fixedHeader();
-            _resizeFixedHeader();
             $(window).resize(_resizeFixedHeader);
             break;
         case 'undoFixedHead':
-            var $t_fixed = $("#" + $this.attr('id') + '-fixedClone');
-            var header = $t_fixed.find('thead');
-            var body = $this.find('tbody');
-            $scrollableFather.unwrap();
-            header.insertBefore(body);
-            $t_fixed.remove();
+            _removeFixedHeader();
             break;
         case 'addRow':
           if (typeof opts.beforeAdd == 'function'){
@@ -28,7 +22,7 @@
           }
 
           var $tr = _addRow();
-
+          _resizeFixedHeader();
           if (typeof opts.afterAdd == 'function'){
             opts.afterAdd.call( $this, $tr );
           }
@@ -43,7 +37,7 @@
           opts.indexes.some( function ( value ) {
             $this.find('tbody tr')[value].remove();
           });
-
+          _resizeFixedHeader();
           if (typeof opts.afterDelete == 'function'){
             opts.afterDelete.call( $this );
           }
@@ -55,7 +49,7 @@
           }
 
           $this.find('tbody tr').remove();
-
+          _resizeFixedHeader();
           if (typeof opts.afterDeleteAll == 'function'){
             opts.afterDeleteAll.call( $this );
           }
@@ -65,27 +59,35 @@
 
     function _fixedHeader() {
         $scrollableFather.wrap('<div id="container-easyTable" />');
-        $t_fixed = $this.clone();
-        $t_fixed.attr('id', $t_fixed.attr('id') + '-fixedClone');
-        $t_fixed.find("tbody").remove().end().addClass("fixedEasyTable").insertBefore($scrollableFather);
+        $headerFixed = $this.clone();
+        $headerFixed.attr('id', $headerFixed.attr('id') + '-fixedClone');
+        $headerFixed.find("tbody").remove().end().addClass("fixedEasyTable").insertBefore($scrollableFather);
         _resizeFixedHeader();
     }
 
     function _resizeFixedHeader() {
 
-        $t_fixed.find("th").each(function(index) {
+        $headerFixed.find("th").each(function(index) {
           $(this).css("width",$this.find("th").eq(index).css('width'));
         });
         
-        $t_fixed.css('width', $scrollableFather.width() - getScrollbarWidth());
+        $headerFixed.css('width', $scrollableFather.width() - getScrollbarWidth());
     		$this.find("thead").remove();
     		$this.find("tr").first().children().each( function (index) {
-    			$(this).css("width", $t_fixed.find("th").eq(index).css('width'));
+    			$(this).css("width", $headerFixed.find("th").eq(index).css('width'));
     		});
+    }
+    
+    function _removeFixedHeader() {
+    	var header = $headerFixed.find('thead');
+        var body = $this.find('tbody');
+        $scrollableFather.unwrap();
+        header.insertBefore(body);
+        $headerFixed.remove();
     }
 
   	function getScrollbarWidth() {
-  		if ( $this.height() > $scrollableFather.height() ) 
+  		if ( $this.height() > $scrollableFather.height() ) {
     		var outer = document.createElement("div");
     		outer.style.visibility = "hidden";
     		outer.style.width = "100px";
@@ -109,10 +111,6 @@
   	  }
   	  return 0;
   	}
-
-    function _scrollFixedHeader() {
-        $t_fixed.show();
-    }
 
     function _addRow() {
       $newRow = $('<tr>');
