@@ -1,7 +1,7 @@
 ;(function($) {
   $.fn.easyTable = function( action , options ) {
     var opts = $.extend( {}, $.fn.easyTable.defaults, options );
-    
+
     var $this = $(this);
     var $scrollableFather = $this.parents().filter( function() {
                   return $(this).css('overflow') == 'auto';
@@ -22,7 +22,9 @@
           }
 
           var $tr = _addRow();
-          _resizeFixedHeader();
+          if ( isFixedHeaded() ) {
+            _resizeFixedHeader();
+          }
           if (typeof opts.afterAdd == 'function'){
             opts.afterAdd.call( $this, $tr );
           }
@@ -37,7 +39,11 @@
           opts.indexes.some( function ( value ) {
             $this.find('tbody tr')[value].remove();
           });
-          _resizeFixedHeader();
+
+          if ( isFixedHeaded() ) {
+            _resizeFixedHeader();
+          }
+
           if (typeof opts.afterDelete == 'function'){
             opts.afterDelete.call( $this );
           }
@@ -49,7 +55,11 @@
           }
 
           $this.find('tbody tr').remove();
-          _resizeFixedHeader();
+          
+          if ( isFixedHeaded() ) {
+            _resizeFixedHeader();
+          }
+
           if (typeof opts.afterDeleteAll == 'function'){
             opts.afterDeleteAll.call( $this );
           }
@@ -70,14 +80,14 @@
         $headerFixed.find("th").each(function(index) {
           $(this).css("width",$this.find("th").eq(index).css('width'));
         });
-        
+
         $headerFixed.css('width', $scrollableFather.width() - getScrollbarWidth());
     		$this.find("thead").remove();
     		$this.find("tr").first().children().each( function (index) {
     			$(this).css("width", $headerFixed.find("th").eq(index).css('width'));
     		});
     }
-    
+
     function _removeFixedHeader() {
     	var header = $headerFixed.find('thead');
         var body = $this.find('tbody');
@@ -92,21 +102,21 @@
     		outer.style.visibility = "hidden";
     		outer.style.width = "100px";
     		outer.style.msOverflowStyle = "scrollbar";
-  
+
     		document.body.appendChild(outer);
-  
+
     		var widthNoScroll = outer.offsetWidth;
-  
+
     		outer.style.overflow = "scroll";
-  
+
     		var inner = document.createElement("div");
     		inner.style.width = "100%";
     		outer.appendChild(inner);
-  
+
     		var widthWithScroll = inner.offsetWidth;
-  
+
     		outer.parentNode.removeChild(outer);
-  
+
     		return widthNoScroll - widthWithScroll;
   	  }
   	  return 0;
@@ -138,6 +148,10 @@
 
       return $newRow;
     };
+
+    function isFixedHeaded() {
+      return ( $headerFixed.length > 0 );
+    }
 
     return this;
   };
