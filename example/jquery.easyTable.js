@@ -9,27 +9,36 @@
     var $headerFixed = $("#" + $this.attr('id') + '-fixedClone');
 
       switch ( action ) {
+
         case 'fixedHead':
+          if ( ! _isFixedHeaded() ){
             _fixedHeader();
             $(window).resize(_resizeFixedHeader);
-            break;
+          }
+          break;
+
         case 'undoFixedHead':
+          if ( _isFixedHeaded() ){
             _removeFixedHeader();
-            break;
+          }
+          break;
+
         case 'addRow':
           if (typeof opts.beforeAdd == 'function'){
             opts.beforeAdd.call( $this );
           }
 
-          var $tr = _addRow();
-          if ( isFixedHeaded() ) {
+          _addRow();
+          if ( _isFixedHeaded() ) {
             _resizeFixedHeader();
           }
+
           if (typeof opts.afterAdd == 'function'){
             opts.afterAdd.call( $this, $tr );
           }
 
           break;
+
         case 'removeRow':
           if (typeof opts.beforeDelete == 'function'){
             opts.beforeDelete.call( $this );
@@ -40,7 +49,7 @@
             $this.find('tbody tr')[value].remove();
           });
 
-          if ( isFixedHeaded() ) {
+          if ( _isFixedHeaded() ) {
             _resizeFixedHeader();
           }
 
@@ -49,6 +58,7 @@
           }
 
           break;
+
         case 'removeAllRows':
           if (typeof opts.beforeDeleteAll == 'function'){
             opts.beforeDeleteAll.call( $this );
@@ -56,7 +66,7 @@
 
           $this.find('tbody tr').remove();
 
-          if ( isFixedHeaded() ) {
+          if ( _isFixedHeaded() ) {
             _resizeFixedHeader();
           }
 
@@ -81,7 +91,7 @@
           $(this).css("width", $this.find("th").eq(index).css('width'));
         });
 
-        $headerFixed.css('width', $this.width() - getScrollbarWidth());
+        $headerFixed.css('width', $this.width() - _getScrollbarWidth());
     		$this.find("thead").remove();
 
     }
@@ -94,7 +104,7 @@
         $headerFixed.remove();
     }
 
-  	function getScrollbarWidth() {
+  	function _getScrollbarWidth() {
   		if ( $this.height() > $scrollableFather.height() ) {
     		var outer = document.createElement("div");
     		outer.style.visibility = "hidden";
@@ -147,7 +157,7 @@
       return $newRow;
     };
 
-    function isFixedHeaded() {
+    function _isFixedHeaded() {
       return ( $headerFixed.length > 0 );
     }
 
