@@ -76,7 +76,8 @@
         $t_fixed.find("th").each(function(index) {
           $(this).css("width",$this.find("th").eq(index).css('width'));
         });
-
+        
+        $t_fixed.css('width', $scrollableFather.width() - getScrollbarWidth());
     		$this.find("thead").remove();
     		$this.find("tr").first().children().each( function (index) {
     			$(this).css("width", $t_fixed.find("th").eq(index).css('width'));
@@ -84,26 +85,29 @@
     }
 
   	function getScrollbarWidth() {
-  		var outer = document.createElement("div");
-  		outer.style.visibility = "hidden";
-  		outer.style.width = "100px";
-  		outer.style.msOverflowStyle = "scrollbar";
-
-  		document.body.appendChild(outer);
-
-  		var widthNoScroll = outer.offsetWidth;
-
-  		outer.style.overflow = "scroll";
-
-  		var inner = document.createElement("div");
-  		inner.style.width = "100%";
-  		outer.appendChild(inner);
-
-  		var widthWithScroll = inner.offsetWidth;
-
-  		outer.parentNode.removeChild(outer);
-
-  		return widthNoScroll - widthWithScroll;
+  		if ( $this.height() > $scrollableFather.height() ) 
+    		var outer = document.createElement("div");
+    		outer.style.visibility = "hidden";
+    		outer.style.width = "100px";
+    		outer.style.msOverflowStyle = "scrollbar";
+  
+    		document.body.appendChild(outer);
+  
+    		var widthNoScroll = outer.offsetWidth;
+  
+    		outer.style.overflow = "scroll";
+  
+    		var inner = document.createElement("div");
+    		inner.style.width = "100%";
+    		outer.appendChild(inner);
+  
+    		var widthWithScroll = inner.offsetWidth;
+  
+    		outer.parentNode.removeChild(outer);
+  
+    		return widthNoScroll - widthWithScroll;
+  	  }
+  	  return 0;
   	}
 
     function _scrollFixedHeader() {
