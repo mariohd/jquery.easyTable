@@ -1,0 +1,73 @@
+
+  body {
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  #scrollableDiv {
+    height: 200px;
+    overflow: auto;
+  }
+
+  .easyTable {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .easyTable thead{
+    background:#1ABC9C;
+  }
+
+  .easyTable th,td{
+    text-align:left;
+    padding:5px;
+  }
+
+
+  .easyTable thead th {
+    font-size: 20;
+    border-bottom:solid 2px;
+  }
+
+  .easyTable tbody tr:nth-child(even){
+    background:#ECF0F1;
+  }
+
+  .textBox {
+    background:#ECF0F1;
+    padding: 10px;
+    margin: 10px;
+    width: 450px;
+    text-align: center;
+  }
+
+  .code {
+    font-family: monospace;
+  }
+
+  .centered {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .roundedCorner {
+    border: solid 1px;
+    border-radius: 5px;
+  }
+
+  button {
+    width: 180px;
+    height: 40px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+
+  pre {
+    display: inline;
+  }

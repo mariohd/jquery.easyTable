@@ -1,88 +1,32 @@
 <html>
   <script type="text/javascript" language="javascript" src="jquery-1.11.1.js"></script>
   <script type="text/javascript" language="javascript" src="jquery.easyTable.js"></script>
-
-  <style>
-
-  body {
-    width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  h1 {
-    text-align: center;
-  }
-
-  #scrollableDiv {
-    height: 200px;
-    overflow: auto;
-    margin: 20px;
-  }
-
-  .easyTable {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .easyTable thead{
-    background:#1ABC9C;
-  }
-
-  .easyTable th,td{
-    text-align:left;
-    padding:5px;
-  }
-
-
-  .easyTable thead th {
-    font-size: 20;
-    border-bottom:solid 2px;
-  }
-
-  .easyTable tbody tr:nth-child(even){
-    background:#ECF0F1;
-  }
-
-  .textBox {
-    background:#ECF0F1;
-    padding: 10px;
-    margin: 10px;
-    width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-  }
-
-  .roundedCorner {
-    border: solid 1px;
-    border-radius: 5px;
-  }
-
-  pre {
-    margin: 0;
-    display: inline;
-  }
-
-
-  </style>
-
+  <link rel="stylesheet" href="example.css">
 
 <script>
   $(document).ready( function() {
+    $('#fixateTableHeader').click( function () {
+      $('#easyTable-example').easyTable( 'fixedHead' );
+      goToTable();
+    });
 
+    $('#undoFixateTableHeader').click( function () {
+      $('#easyTable-example').easyTable( 'undoFixedHead' );
+      goToTable();
+    });
 
   });
+
+  function goToTable() {
+    $("html, body").animate({
+        scrollTop: 0
+    }, 1000);
+  }
 </script>
 
   <body>
-    <h1>JQuery.EasyTable example</h1>
-
-    <p>This example shows a simple table with LOREM IPSUM text, just to exemplify how to use easyTable.</p>
-    <p style="display: inline;">To execute jquery.easyTable function for fixate <pre>&lt;thead></pre> we need to run the command:</p>
-    <div class="textBox roundedCorner">
-        $('#easyTable-example').easyTable( 'fixedHead' );
-    </div>
+    <h1>JQuery.EasyTable examples</h1>
+    <p>Those examples shows a simple table with LOREM IPSUM text, just to exemplify how to use easyTable.</p>
     <div id="scrollableDiv">
       <table class="easyTable" cellspacing="0" cellpadding="0" id="easyTable-example">
         <thead>
@@ -224,8 +168,57 @@
         </tbody>
       </table>
     </div>
-    <div class="textBox roundedCorner">
-        $('#easyTable-example').easyTable( 'undoFixedHead' );
+    <div>
+      <h2>Fixed Table Header</h2>
+      <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center;">none</td>
+          </tr>
+        </tbody>
+      </table>
+      To execute jquery.easyTable function for fixate <pre>&lt;thead></pre>, we need to run the following command.
+      <div class="textBox centered roundedCorner">
+      <code>$('#easyTable-example').easyTable( 'fixedHead' );</code>
+        <button id="fixateTableHeader">fixate header</button>
+      </div>
+      <div class="textBox centered roundedCorner">
+        <code>$('#easyTable-example').easyTable( 'undoFixedHead' );</code>
+        <button id="undoFixateTableHeader">undo</button>
+      </div>
+
     </div>
+    <div>
+      <h2>Adding Rows</h2>
+      <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+        <thead>
+          <tr>
+            <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center; border-bottom: solid 1px;">columnsValues</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; border-bottom: solid 1px;">columnsNames</td>
+          </tr>
+          <tr>
+            <td style="text-align: center;">columnsIDs</td>
+          </tr>
+        </tbody>
+      </table>
+      To execute jquery.easyTable function for adding rows we need to run the following command:
+      <div class="textBox centered roundedCorner">
+        <code>
+          $('#easyTable-example').easyTable('addRow', { columnsValues: [] } );</code>
+
+        <button id="undoFixateTableHeader">add</button>
+      </div>
   </body>
 </html>
