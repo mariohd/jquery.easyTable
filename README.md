@@ -2,12 +2,12 @@ jquery.easyTable
 ================
 
 The intent of this plugin is to help the development while using tables.
-Has some quicker solutions for some commons and tricky problems.
-This plugin uses JQuery, one of the most important javascript`s library.
+It has some quicker solutions for some commons and tricky problems.
+This plugin uses jQuery, one of the most important javascript's library.
 
 How does it work...
 ==============
-This plugin don`t have any default action, so it will depend the parameter while calling the method.
+This plugin don't have any default action, so it will depend on the parameter while calling the method.
 
 The available actions are : `fixedHead`, `undoFixedHead`, `addRow`, `removeRow`, `removeAllRows`.
 
@@ -30,7 +30,7 @@ How to Apply the plugin?
 ================
 
 Import the JS file like any other else!
-Just remember to put easyTable import after JQuery import ;)
+Just remember to put easyTable import after jQuery import ;)
 
 ```html
    <script type="text/javascript" src="jquery-1.11.1.js"></script>
@@ -42,10 +42,10 @@ Just remember to put easyTable import after JQuery import ;)
 Usage
 ==============
 
-As any other JQuery plugin, just need and JQuery object and a method call!
+As any other jQuery plugin, it just needs a jQuery object and a method call!
 
 ```html
-    // To fixed header of a table.
+    // To fix the header of a table.
     $('#easyTable-example').easyTable( 'fixedHead' );  
 
     //Adding a row.
@@ -59,4 +59,4 @@ As any other JQuery plugin, just need and JQuery object and a method call!
 
 ```
 
-This plugin still under development, any help will be welcome!
+This plugin is still under development, any help will be appreciated!
