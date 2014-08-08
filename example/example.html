@@ -6,19 +6,68 @@
 <script>
   $(document).ready( function() {
     $('#fixateTableHeader').click( function () {
-      $('#easyTable-example').easyTable( 'fixedHead' );
       goToTable();
+      $('#easyTable-example').easyTable( 'fixedHead' );
     });
 
     $('#undoFixateTableHeader').click( function () {
-      $('#easyTable-example').easyTable( 'undoFixedHead' );
       goToTable();
+      $('#easyTable-example').easyTable( 'undoFixedHead' );
     });
 
+    $('#addRowOnTable').click( function () {
+      goToTable();
+      tableDown();
+
+      setTimeout(
+        function ()
+          {
+            $('#easyTable-example').easyTable( 'addRow' ,{ columnsValues: ['You can', 'put some', 'HTML', 'Tags', '<input type="checkbox">' ]} );
+            tableDown();
+          },
+      1500);
+    });
+
+    $('#removeRowFromTable').click( function () {
+      goToTable();
+      tableUp();
+      setTimeout(
+        function ()
+          {
+            $('#easyTable-example').easyTable( 'removeRow' ,{ indexes: [ 0, 1, 2 ] } );
+          },
+      1500);
+
+    });
+
+    $('#removeAllRowsFromTable').click( function () {
+      goToTable();
+      tableUp();
+      setTimeout(
+        function ()
+          {
+            $('#easyTable-example').easyTable( 'removeAllRows' );
+          },
+      1500);
+
+    });
   });
+
 
   function goToTable() {
     $("html, body").animate({
+        scrollTop: 0
+    }, 1000);
+  }
+
+  function tableDown() {
+    $("#scrollableDiv").animate({
+        scrollTop: $('#easyTable-example').height()
+    }, 1000);
+  }
+
+  function tableUp() {
+    $("#scrollableDiv").animate({
         scrollTop: 0
     }, 1000);
   }
@@ -169,7 +218,7 @@
       </table>
     </div>
     <div>
-      <h2>Fixed Table Header</h2>
+      <h2>Fix Table Header</h2>
       <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
         <thead>
           <tr>
@@ -184,11 +233,11 @@
       </table>
       To execute jquery.easyTable function for fixate <pre>&lt;thead></pre>, we need to run the following command.
       <div class="textBox centered roundedCorner">
-      <code>$('#easyTable-example').easyTable( 'fixedHead' );</code>
+      <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'fixedHead' );</div>
         <button id="fixateTableHeader">fixate header</button>
       </div>
       <div class="textBox centered roundedCorner">
-        <code>$('#easyTable-example').easyTable( 'undoFixedHead' );</code>
+        <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'undoFixedHead' );</div>
         <button id="undoFixateTableHeader">undo</button>
       </div>
 
@@ -215,10 +264,49 @@
       </table>
       To execute jquery.easyTable function for adding rows we need to run the following command:
       <div class="textBox centered roundedCorner">
-        <code>
-          $('#easyTable-example').easyTable('addRow', { columnsValues: [] } );</code>
-
-        <button id="undoFixateTableHeader">add</button>
+        <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow' ,{ </br> columnsValues: ['You can', 'put some', 'HTML', 'Tags', '&ltinput type="checkbox">' ]} );</div>
+        <button id="addRowOnTable">add</button>
       </div>
+      To add a new row, <pre>ColumnsValues</pre> is the only parameter that is mandatory for this method work properly.
+    </br>The others parameters, <pre>ColumnsNames</pre> and <pre>ColumnsIDs</pre>, are for <pre>name</pre> attribute and <pre>id</pre> respectively.
+
+    <h2>Removing Rows</h2>
+    <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: center;">indexes</td>
+        </tr>
+      </tbody>
+    </table>
+    To execute jquery.easyTable function for remove rows, we need to run the following command:
+    <div class="textBox centered roundedCorner">
+      <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeRow' ,{ indexes: [ 0, 1, 2 ] } );</div>
+      <button id="removeRowFromTable">remove</button>
+    </div>
+    To remove rows, <pre>indexes</pre> is the only parameter that is needed for this method. The line index begins at 0 .. (last-tr).
+
+    <h2>Removing All Rows</h2>
+    <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+      <thead>
+        <tr>
+          <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="text-align: center;">none</td>
+        </tr>
+      </tbody>
+    </table>
+    To execute jquery.easyTable function for remove all rows, we need to run the following command:
+    <div class="textBox centered roundedCorner">
+      <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeAllRows' );</div>
+      <button id="removeAllRowsFromTable">remove all</button>
+    </div>
   </body>
 </html>

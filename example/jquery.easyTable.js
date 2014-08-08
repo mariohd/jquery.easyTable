@@ -87,19 +87,27 @@
 
     function _resizeFixedHeader() {
 
-        $headerFixed.find("th").each(function(index) {
-          $(this).css("width", $this.find("th").eq(index).css('width'));
-        });
+        if ( $this.find("th").length > 0 ) {
+          $headerFixed.find("th").each(function(index) {
+            $(this).css("width", $this.find("th").eq(index).css('width'));
+          });
+        } else {
+          $($this.find("tr")[0]).find("td").each(function(index) {
+            $(this).css("width", $headerFixed.find("th").eq(index).css('width'));
+          });
+        }
 
+        $this.find("thead").remove();
         $headerFixed.css('width', $this.width() - _getScrollbarWidth());
-    		$this.find("thead").remove();
-
     }
 
     function _removeFixedHeader() {
     	var header = $headerFixed.find('thead');
         var body = $this.find('tbody');
         $scrollableFather.unwrap();
+        header.find('th').each( function () {
+            $(this).css('width', '');
+        });
         header.insertBefore(body);
         $headerFixed.remove();
     }
