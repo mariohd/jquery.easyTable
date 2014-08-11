@@ -231,7 +231,8 @@
           </tr>
         </tbody>
       </table>
-      To execute jquery.easyTable function for fixate <pre>&lt;thead></pre>, we need to run the following command.
+      <p>This method aim to fix table header while the body can be scrolled through table content.</p>
+      To execute jquery.easyTable function for fix <pre>&lt;thead></pre>, we need to run the following command.
       <div class="textBox centered roundedCorner">
       <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'fixedHead' );</div>
         <button id="fixateTableHeader">fixate header</button>
@@ -262,13 +263,13 @@
           </tr>
         </tbody>
       </table>
+      <p>This method is to add a row easily, just call the method and than the values will be added to end of the table, after the last row.</p>
       To execute jquery.easyTable function for adding rows we need to run the following command:
       <div class="textBox centered roundedCorner">
         <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow' ,{ </br> columnsValues: ['You can', 'put some', 'HTML', 'Tags', '&ltinput type="checkbox">' ]} );</div>
         <button id="addRowOnTable">add</button>
       </div>
-      To add a new row, <pre>ColumnsValues</pre> is the only parameter that is mandatory for this method work properly.
-    </br>The others parameters, <pre>ColumnsNames</pre> and <pre>ColumnsIDs</pre>, are for <pre>name</pre> attribute and <pre>id</pre> respectively.
+      To add a new row, <pre>ColumnsValues</pre> is the only parameter that is mandatory for this method work properly, the others parameters, <pre>ColumnsNames</pre> and <pre>ColumnsIDs</pre>, are for <pre>name</pre> attribute and <pre>id</pre> respectively.
 
     <h2>Removing Rows</h2>
     <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
@@ -283,6 +284,7 @@
         </tr>
       </tbody>
     </table>
+    <p>This method aim to to choose index and then remove the rows.</p>
     To execute jquery.easyTable function for remove rows, we need to run the following command:
     <div class="textBox centered roundedCorner">
       <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeRow' ,{ indexes: [ 0, 1, 2 ] } );</div>
@@ -303,6 +305,7 @@
         </tr>
       </tbody>
     </table>
+    <p>The main porpouse of the method is to clean the table, removing all rows. </p>
     To execute jquery.easyTable function for remove all rows, we need to run the following command:
     <div class="textBox centered roundedCorner">
       <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeAllRows' );</div>

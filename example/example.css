@@ -71,3 +71,7 @@
   pre {
     display: inline;
   }
+
+  .tab {
+      padding-left: 15px;
+  }
