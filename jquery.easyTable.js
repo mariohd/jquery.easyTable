@@ -185,4 +185,4 @@
     columnsIDs: []
   };
 
-})(jQuery);
+}(jQuery));
