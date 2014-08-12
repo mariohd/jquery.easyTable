@@ -10,35 +10,6 @@
     $headerFixed = $("#" + $this.attr('id') + '-fixedClone'),
     $tr;
 
-    function _getScrollbarWidth() {
-        if ( $this.height() > $scrollableFather.height() ) {
-            var outer = document.createElement("div"),
-                widthNoScroll,
-                inner,
-                widthWithScroll;
-            outer.style.visibility = "hidden";
-            outer.style.width = "100px";
-            outer.style.msOverflowStyle = "scrollbar";
-
-            document.body.appendChild(outer);
-
-            widthNoScroll = outer.offsetWidth;
-
-            outer.style.overflow = "scroll";
-
-            inner = document.createElement("div");
-            inner.style.width = "100%";
-            outer.appendChild(inner);
-
-            widthWithScroll = inner.offsetWidth;
-
-            outer.parentNode.removeChild(outer);
-
-            return widthNoScroll - widthWithScroll;
-        }
-        return 0;
-    }
-
     function _resizeFixedHeader() {
 
         if ( $this.find("th").length > 0 ) {
@@ -52,7 +23,7 @@
         }
 
         $this.find("thead").remove();
-        $headerFixed.css('width', $this.width() - _getScrollbarWidth());
+        $headerFixed.css('width', $this.width());
     }
 
     function _fixedHeader() {
