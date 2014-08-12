@@ -74,7 +74,7 @@
         $headerFixed.remove();
     }
 
-    
+
 
     function _addRow() {
         var $newRow = $('<tr>');
@@ -138,8 +138,8 @@
         break;
 
         case 'removeRow':
-            if (typeof opts.beforeDelete === 'function'){
-                opts.beforeDelete.call( $this );
+            if (typeof opts.beforeRemove === 'function'){
+                opts.beforeRemove.call( 'undefined', $this );
             }
 
             opts.indexes.sort().reverse();
@@ -151,15 +151,15 @@
                 _resizeFixedHeader();
             }
 
-            if (typeof opts.afterDelete === 'function'){
-                opts.afterDelete.call( $this );
+            if (typeof opts.afterRemove === 'function'){
+                opts.afterRemove.call('undefined', $this );
             }
 
         break;
 
         case 'removeAllRows':
-            if (typeof opts.beforeDeleteAll === 'function'){
-                opts.beforeDeleteAll.call( $this );
+            if (typeof opts.beforeRemoveAll === 'function'){
+                opts.beforeRemoveAll.call( 'undefined', $this );
             }
 
             $this.find('tbody tr').remove();
@@ -168,8 +168,8 @@
                 _resizeFixedHeader();
             }
 
-            if (typeof opts.afterDeleteAll === 'function'){
-                opts.afterDeleteAll.call( $this );
+            if (typeof opts.afterRemoveAll === 'function'){
+                opts.afterRemoveAll.call( 'undefined', $this );
             }
 
         break;

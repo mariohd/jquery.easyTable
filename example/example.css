@@ -9,6 +9,10 @@
     text-align: center;
   }
 
+  .child {
+    padding-left: 20px;
+  }
+
   #scrollableDiv {
     height: 200px;
     overflow: auto;

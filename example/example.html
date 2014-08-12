@@ -51,6 +51,44 @@
       1500);
 
     });
+
+    $('#addWithEffect').click( function () {
+      goToTable();
+      tableDown();
+      setTimeout(
+        function ()
+          {
+            $('#easyTable-example').easyTable( 'addRow', { columnsValues: ['This row', 'will fade in', 'after', '5 seconds', 'with event call!'], animateAdd: function (table, tr) { tr.fadeIn(5000); } } );
+            tableDown();
+          },
+      1500);
+
+    });
+
+    $('#removeWithEffect').click( function () {
+      goToTable();
+      tableUp();
+      setTimeout(
+        function ()
+          {
+            $('#easyTable-example').easyTable( 'removeRow', { indexes: [ 0, 1 ], beforeRemove: function () { alert('before remove!') }, afterRemove: function() { alert('and after remove!') }  } );
+          },
+      1500);
+
+    });
+
+    $('#removeAllWithEffect').click( function () {
+      goToTable();
+      tableUp();
+      setTimeout(
+        function ()
+          {
+            $('#easyTable-example').easyTable( 'removeAllRows', { afterRemoveAll: function(table) {  alert('table has now: '  + table.find('tbody tr').length  + ' rows') }  } );
+          },
+      1500);
+
+    });
+
   });
 
 
@@ -217,99 +255,187 @@
         </tbody>
       </table>
     </div>
-    <div>
-      <h2>Fix Table Header</h2>
-      <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
-        <thead>
-          <tr>
-            <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="text-align: center;">none</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>This method aim to fix table header while the body can be scrolled through table content.</p>
-      To execute jquery.easyTable function for fix <pre>&lt;thead></pre>, we need to run the following command.
-      <div class="textBox centered roundedCorner">
-      <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'fixedHead' );</div>
-        <button id="fixateTableHeader">fixate header</button>
-      </div>
-      <div class="textBox centered roundedCorner">
-        <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'undoFixedHead' );</div>
-        <button id="undoFixateTableHeader">undo</button>
+      <h2>Methods</h2>
+        <div class="child">
+          <h3>Fix Table Header</h3>
+          <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+            <thead>
+              <tr>
+                <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center;">none</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>This method aim to fix table header while the body can be scrolled through table content.</p>
+          To execute jquery.easyTable function for fix <pre>&lt;thead></pre>, we need to run the following command.
+          <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'fixedHead' );</div>
+            <button id="fixateTableHeader">fixate header</button>
+          </div>
+          <div class="textBox centered roundedCorner">
+            <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'undoFixedHead' );</div>
+            <button id="undoFixateTableHeader">undo</button>
+          </div>
+        </div>
+
+      <div class="child">
+        <h3>Adding Rows</h3>
+        <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; border-bottom: solid 1px;">columnsValues</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; border-bottom: solid 1px;">columnsNames</td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">columnsIDs</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>This method is to add a row easily, just call the method and than the values will be added to end of the table, after the last row.</p>
+        To execute jquery.easyTable function for adding rows we need to run the following command:
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow' ,{ </br> columnsValues: ['You can', 'put some', 'HTML', 'Tags', '&ltinput type="checkbox">' ]} );</div>
+          <button id="addRowOnTable">add</button>
+        </div>
+        To add a new row, <pre>ColumnsValues</pre> is the only parameter that is mandatory for this method work properly, the others parameters, <pre>ColumnsNames</pre> and <pre>ColumnsIDs</pre>, are for <pre>name</pre> attribute and <pre>id</pre> respectively.
       </div>
 
+      <div class="child">
+        <h3>Removing Rows</h3>
+        <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center;">indexes</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>This method aim to to choose index and then remove the rows.</p>
+        To execute jquery.easyTable function for remove rows, we need to run the following command:
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeRow' ,{ indexes: [ 0, 1, 2 ] } );</div>
+          <button id="removeRowFromTable">remove</button>
+        </div>
+        To remove rows, <pre>indexes</pre> is the only parameter that is needed for this method. The line index begins at 0 .. (last-tr).
     </div>
-    <div>
-      <h2>Adding Rows</h2>
-      <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
-        <thead>
-          <tr>
-            <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="text-align: center; border-bottom: solid 1px;">columnsValues</td>
-          </tr>
-          <tr>
-            <td style="text-align: center; border-bottom: solid 1px;">columnsNames</td>
-          </tr>
-          <tr>
-            <td style="text-align: center;">columnsIDs</td>
-          </tr>
-        </tbody>
-      </table>
-      <p>This method is to add a row easily, just call the method and than the values will be added to end of the table, after the last row.</p>
-      To execute jquery.easyTable function for adding rows we need to run the following command:
-      <div class="textBox centered roundedCorner">
-        <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow' ,{ </br> columnsValues: ['You can', 'put some', 'HTML', 'Tags', '&ltinput type="checkbox">' ]} );</div>
-        <button id="addRowOnTable">add</button>
+    <div class="child">
+        <h3>Removing All Rows</h3>
+        <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center;">none</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>The main porpouse of the method is to clean the table, removing all rows. </p>
+        To execute jquery.easyTable function for remove all rows, we need to run the following command:
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeAllRows' );</div>
+          <button id="removeAllRowsFromTable">remove all</button>
+        </div>
       </div>
-      To add a new row, <pre>ColumnsValues</pre> is the only parameter that is mandatory for this method work properly, the others parameters, <pre>ColumnsNames</pre> and <pre>ColumnsIDs</pre>, are for <pre>name</pre> attribute and <pre>id</pre> respectively.
 
-    <h2>Removing Rows</h2>
-    <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
-      <thead>
-        <tr>
-          <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center;">indexes</td>
-        </tr>
-      </tbody>
-    </table>
-    <p>This method aim to to choose index and then remove the rows.</p>
-    To execute jquery.easyTable function for remove rows, we need to run the following command:
-    <div class="textBox centered roundedCorner">
-      <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeRow' ,{ indexes: [ 0, 1, 2 ] } );</div>
-      <button id="removeRowFromTable">remove</button>
-    </div>
-    To remove rows, <pre>indexes</pre> is the only parameter that is needed for this method. The line index begins at 0 .. (last-tr).
+      <h2>Events callbacks</h2>
+      <div class="child">
+        jQuery.easyTable accept some callback functions for some methods. There are 3 moments that they will be executed: before starts the execution, in the middle of execution and after the method has completly executed.
 
-    <h2>Removing All Rows</h2>
-    <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
-      <thead>
-        <tr>
-          <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Aditional Parameters</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center;">none</td>
-        </tr>
-      </tbody>
-    </table>
-    <p>The main porpouse of the method is to clean the table, removing all rows. </p>
-    To execute jquery.easyTable function for remove all rows, we need to run the following command:
-    <div class="textBox centered roundedCorner">
-      <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeAllRows' );</div>
-      <button id="removeAllRowsFromTable">remove all</button>
-    </div>
+        The methods, 'addRow', 'removeRows' and 'removeAllRows' accept these callback functions.
+        <h3>Add Row Event</h3>
+        To 'addRow' method, we can pass call functions on this events.
+        <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Callbacks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; border-bottom: solid 1px;">beforeAdd(table, tr)</td>
+            </tr>
+            <tr>
+              <td style="text-align: center; border-bottom: solid 1px;">animateAdd(table, tr)</td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">afterAdd(table, tr)</td>
+            </tr>
+          </tbody>
+        </table>
+        To execute jquery.easyTable function for adding rows with event call, we need to run the following command:
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow', { columnsValues: ['This row', 'will fade in', 'after', '5 seconds', 'with event call!'], animateAdd: function (table, tr) { tr.fadeIn(5000); } } );</div>
+          <button id="addWithEffect">add with visual effect</button>
+        </div>
+        Those functions, some of those functions has parameters. The first one is the table itself and the second one, is the row that will be added. 'BeforeAdd', the 'tr' parameter is always undefined, since the row don`t exist yet, just added to maintain consistency with the others functions.
+
+        <h3>Remove row event</h3>
+        The 'removeRow' method, call this events. They are called before and after the execution of the method.
+        <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Callbacks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; border-bottom: solid 1px;">beforeRemove(table)</td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">afterRemove(table)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeRow', { indexes: [ 0, 1 ], beforeRemove: function () { alert('before remove!') }, afterRemove: function() { alert('and after remove!') }  } );</div>
+          <button id="removeWithEffect">remove with alerts</button>
+        </div>
+        Those functions are called just once, even if the quantity of rows to be removed is more than one.
+        They receive only the table as parameter.
+
+
+        <h3>Remove All rows event</h3>
+        The 'removeAllRows' method, call this events. They are called before and after the execution of the method.
+        <table style="border:solid 1px; border-radius: 5px; margin: 10px;" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th style="padding: 5px; border-bottom: solid 1px; background-color: #ECF0F1">Callbacks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="text-align: center; border-bottom: solid 1px;">beforeRemoveAll(table)</td>
+            </tr>
+            <tr>
+              <td style="text-align: center;">afterRemoveAll(table)</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeAllRows', { afterRemoveAll: function(table) {  alert('table has now: '  + table.find('tbody tr').length  + ' rows') }  } );</div>
+          <button id="removeAllWithEffect">remove all rows with callback</button>
+        </div>
+        Those functions are called just once, even if the quantity of rows to be removed is more than one.
+        They don't receive any parameters.
+
+      </div>
   </body>
 </html>
