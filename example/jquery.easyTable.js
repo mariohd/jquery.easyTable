@@ -11,19 +11,25 @@
     $tr;
 
     function _resizeFixedHeader() {
-
+    	$headerFixed.css('width', $this.width());	
         if ( $this.find("th").length > 0 ) {
-            $headerFixed.find("th").each(function(index) {
-                $(this).css("width", $this.find("th").eq(index).css('width'));
-            });
-        } else {
-            $($this.find("tr")[0]).find("td").each(function(index) {
-                $(this).css("width", $headerFixed.find("th").eq(index).css('width'));
-            });
+        	var olderHeader = $this.find("th");
+           
+           $headerFixed.find('th').each( function (index) { 
+        	   $(this).css('width', $(olderHeader[index]).css('width'));
+           });
+           
+           $this.find("thead").remove();
         }
 
-        $this.find("thead").remove();
-        $headerFixed.css('width', $this.width());
+        var rows = $this.children('tbody').children('tr'),
+        easyTableHeaders = $headerFixed.find('th');
+    
+	    $(rows).each( function () {
+	 	   $(this).children('td').each( function (index) {
+	 		   $(this).css('width', $(easyTableHeaders[index]).css('width'));
+	 	   });
+	    });
     }
 
     function _fixedHeader() {
@@ -36,7 +42,7 @@
 
     function _removeFixedHeader() {
         var header = $headerFixed.find('thead'),
-        body = $this.find('tbody');
+        body = $this.children('tbody');
         $scrollableFather.unwrap();
         header.find('th').each( function () {
             $(this).css('width', '');
@@ -89,6 +95,7 @@
         case 'undoFixedHead':
             if ( _isFixedHeaded() ){
                 _removeFixedHeader();
+                $(window).unbind('resize');
             }
         break;
 
