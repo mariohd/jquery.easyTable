@@ -1,5 +1,4 @@
 
-
 (function ($) {
     "use strict";
     $.fn.easyTable = function( action , options ) {
@@ -12,25 +11,25 @@
     $tr;
 
     function _resizeFixedHeader() {
-    	$headerFixed.css('width', $this.width());	
+      $headerFixed.css('width', $this.width());
         if ( $this.find("th").length > 0 ) {
-        	var olderHeader = $this.find("th");
-           
-           $headerFixed.find('th').each( function (index) { 
-        	   $(this).css('width', $(olderHeader[index]).css('width'));
+          var olderHeader = $this.find("th");
+
+           $headerFixed.find('th').each( function (index) {
+             $(this).css('width', $(olderHeader[index]).css('width'));
            });
-           
+
            $this.find("thead").remove();
         }
 
         var rows = $this.children('tbody').children('tr'),
         easyTableHeaders = $headerFixed.find('th');
-    
-	    $(rows).each( function () {
-	 	   $(this).children('td').each( function (index) {
-	 		   $(this).css('width', $(easyTableHeaders[index]).css('width'));
-	 	   });
-	    });
+
+      $(rows).each( function () {
+        $(this).children('td').each( function (index) {
+          $(this).css('width', $(easyTableHeaders[index]).css('width'));
+        });
+      });
     }
 
     function _fixedHeader() {
@@ -83,6 +82,26 @@
     function _isFixedHeaded() {
         return ( $headerFixed.length > 0 );
     }
+
+    function _editRowContent() {
+        var $row = $(this),
+            $input = $('<input>');
+        $input.val( $(this).html() );
+        $input.css('width', $row.css('width'));
+        $row.empty();
+        $row.append($input);
+        $row.off();
+        $input.focus();
+        $input.focusout( function () {
+          $row.html( $(this).val() );
+          $row.dblclick(_editRowContent);
+
+          if ( _isFixedHeaded() ) {
+              _resizeFixedHeader();
+          }
+
+        });
+    };
 
     switch ( action ) {
 
@@ -151,6 +170,19 @@
                 opts.afterRemoveAll.call( 'undefined', $this );
             }
 
+        break;
+
+        case 'editRowContent':
+
+          if ( opts.edit === true ) {
+              $this.find('td').each(function () {
+                  $(this).dblclick(_editRowContent);
+              });
+          } else {
+            $this.find('td').each(function () {
+                $(this).off();
+            });
+          }
         break;
     }
 
