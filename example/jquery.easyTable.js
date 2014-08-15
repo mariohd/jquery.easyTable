@@ -10,39 +10,8 @@
     $headerFixed = $("#" + $this.attr('id') + '-fixedClone'),
     $tr;
 
-
-    function sortTableByNumber( columnIndex ) {
-      var rows = $this.find('tbody tr');
-
-      rows.sort(function(a, b) {
-
-        var A = $(a).children('td').eq(columnIndex).text().toUpperCase(),
-            B = $(b).children('td').eq(columnIndex).text().toUpperCase();
-
-        if(Number(A) < Number(B)) {
-          return -1;
-        }
-
-        if(Number(A) > Number(B)) {
-          return 1;
-        }
-
-        return 0;
-
-      });
-
-      $this.find('tbody tr').remove();
-      $this.find('tbody').append(rows)
-
-    }
-
-    function sortTableByText( columnIndex ) {
-      var rows = $this.find('tbody tr');
-
-      rows.sort(function(a, b) {
-
-        var A = $(a).children('td').eq(columnIndex).text().toUpperCase(),
-            B = $(b).children('td').eq(columnIndex).text().toUpperCase();
+    function smartSort(A, B) {
+      if ( isNaN(A) || isNaN(B) ) {
 
         if( A  < B ) {
           return -1;
@@ -51,15 +20,35 @@
         if( A > B ) {
           return 1;
         }
+      } else {
 
-        return 0;
+        if(Number(A) < Number(B)) {
+          return -1;
+        }
+
+        if(Number(A) > Number(B)) {
+          return 1;
+        }
+      }
+      return 0;
+    }
+
+    function sortTableBy( columnIndex ) {
+      var rows = $this.find('tbody tr');
+
+      rows.sort(function(a, b) {
+
+        var A = $(a).children('td').eq(columnIndex).text().toUpperCase(),
+            B = $(b).children('td').eq(columnIndex).text().toUpperCase();
+
+        return smartSort(A, B);
 
       });
 
       $this.find('tbody tr').remove();
       $this.find('tbody').append(rows)
-    }
 
+    }
 
     function _resizeFixedHeader() {
     	$headerFixed.css('width', $this.width());
@@ -237,11 +226,7 @@
         break;
 
         case 'sort':
-          if ( opts.sortBy.toUpperCase() === 'NUMBER'){
-            sortTableByNumber(opts.column);
-          } else {
-            sortTableByText(opts.column);
-          }
+            sortTableBy(opts.column);
         break;
     }
 
