@@ -1,20 +1,9 @@
-
-  body {
-    width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  h1 {
-    text-align: center;
-  }
-
   .child {
     padding-left: 20px;
   }
 
   #scrollableDiv {
-    height: 200px;
+    height: 400px;
     overflow: auto;
   }
 
@@ -23,7 +12,9 @@
   }
 
   .easyTable thead{
-    background:#2e7bcf;
+    background:#1ABC9C;
+    font-weight: bold;
+    color: white;
   }
 
   .easyTable th,td{
@@ -33,8 +24,8 @@
 
 
   .easyTable thead th {
-    font-size: 20;
-    border-bottom:solid 2px;
+    font-size: 25;
+
   }
 
   .easyTable tbody tr:nth-child(even){
@@ -43,9 +34,9 @@
 
   .textBox {
     background:#ECF0F1;
-    padding: 10px;
+    padding: 6px;
     margin: 10px;
-    width: 450px;
+    width: 510px;
     text-align: center;
   }
 
@@ -77,4 +68,24 @@
 
   .tab {
       padding-left: 15px;
+  }
+
+  .tableParameters {
+    border:solid 1px;
+    margin: 10px;
+    width: 200px;
+  }
+
+  .headerParameters {
+    padding: 5px;
+    border-bottom: solid 1px;
+    background-color: #ECF0F1;
+  }
+
+  .contentParameters {
+    text-align: center;
+  }
+
+  h2 {
+    margin-top: 20px;
   }

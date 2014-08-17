@@ -62,7 +62,7 @@
     }
 
     function _resizeFixedHeader() {
-    	$headerFixed.css('width', $this.width());
+    	$headerFixed.css('width', $scrollableFather.width());
         if ( $this.find("th").length > 0 ) {
         	var olderHeader = $this.find("th");
 
@@ -132,14 +132,16 @@
 
     function _editRowContent() {
         var $row = $(this),
-            $input = $('<input>');
-        $input.val( $(this).html() );
-        $input.css('width', $row.css('width'));
+            $textArea = $('<textarea>');
+        $textArea.val( $(this).html() );
         $row.empty();
-        $row.append($input);
+        $textArea.css('width', $row.width());
+        $textArea.css('height', $row.height());
+        $textArea.css('resize', 'none');
+        $row.append($textArea);
         $row.off();
-        $input.focus();
-        $input.focusout( function () {
+        $textArea.focus();
+        $textArea.focusout( function () {
           $row.html( $(this).val() );
           $row.dblclick(_editRowContent);
 
