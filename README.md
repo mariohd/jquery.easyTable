@@ -62,3 +62,5 @@ As any other jQuery plugin, it just needs a jQuery object and a method call!
 ```
 
 This plugin is still under development, any help will be appreciated!
+
+Check out [plugins's page](http://mariohd.github.io/jquery.easyTable/ "Title").
