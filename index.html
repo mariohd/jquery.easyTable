@@ -49,7 +49,7 @@ This plugin uses jQuery, one of the most important javascript's library.</p>
         ├── undoFixedHead
         ├── addRow
         |   ├── columnsValues
-        │   ├── { columnsNames }  
+        │   ├── { columnsNames }
         |   └── { columnsIDs }
         ├── editRowContent
         |   └── edit
@@ -78,23 +78,28 @@ Just remember to put easyTable import after jQuery import ;)</p>
 <p>As any other jQuery plugin, it just needs a jQuery object and a method call!</p>
 
 <div class="highlight highlight-html"><pre>
-// To fix the header of a table. 
-$('#easyTable-example').easyTable( 'fixedHead' );  
+// To fix the header of a table.
+$('#easyTable-example').easyTable( 'fixedHead' );
 
 //Adding a row.
 $('#easyTable-example').easyTable('addRow', { columnsValues: ["first", "...", "N" ] } );
 
 //Remove some rows.
-$('#easyTable-example').easyTable( 'removeRow', { indexes: [ 0, 2 ] } );  
+$('#easyTable-example').easyTable( 'removeRow', { indexes: [ 0, 2 ] } );
 
 //Remove entire content.
-$('#easyTable-example').easyTable( 'removeAllRows' );  
+$('#easyTable-example').easyTable( 'removeAllRows' );
 </pre></div>
 
 <p>This plugin is still under development, any help will be appreciated!</p>
         </section>
 
         <aside id="sidebar">
+          <a href="" class="button button-demo">
+            <small>Run</small>
+            Live Demo
+          </a>
+
           <a href="https://github.com/mariohd/jquery.easyTable/zipball/master" class="button">
             <small>Download</small>
             .zip file
@@ -111,6 +116,6 @@ $('#easyTable-example').easyTable( 'removeAllRows' );
       </div>
     </div>
 
-  
+
   </body>
 </html>
