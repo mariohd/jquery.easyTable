@@ -5,7 +5,7 @@ The intent of this plugin is to help the development while using tables.
 It has some quicker solutions for some commons and tricky problems.
 This plugin uses jQuery, one of the most important javascript's library.
 
-Check out [plugins's page](http://mariohd.github.io/jquery.easyTable/ "Title").
+Check out live demo on [plugins's page](http://mariohd.github.io/jquery.easyTable/ "Title").
 
 How does it work...
 ==============
