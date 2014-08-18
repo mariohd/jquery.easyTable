@@ -32,7 +32,7 @@
 
            widthWithScroll = inner.offsetWidth;
            outer.parentNode.removeChild(outer);
-           return widthNoScroll widthWithScroll;
+           return widthNoScroll - widthWithScroll;
        }
        return 0;
    }
