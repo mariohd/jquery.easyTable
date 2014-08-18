@@ -11,7 +11,7 @@ How does it work...
 ==============
 This plugin don't have any default action, so it will depend on the parameter while calling the method.
 
-The available actions are : `fixedHead`, `undoFixedHead`, `addRow`, `editRowContent`, `removeRow`, `removeAllRows`, 'sort'.
+The available actions are : `fixedHead`, `undoFixedHead`, `addRow`, `editRowContent`, `removeRow`, `removeAllRows`, `sort`.
 
 Some actions also need other parameters to do his jobs.
 ```
