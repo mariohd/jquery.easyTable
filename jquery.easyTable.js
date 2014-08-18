@@ -10,13 +10,91 @@
     $headerFixed = $("#" + $this.attr('id') + '-fixedClone'),
     $tr;
 
+    function _getScrollbarWidth() {
+       if ( $this.height() > $scrollableFather.height() ) {
+           var outer = document.createElement("div"),
+               widthNoScroll,
+               inner,
+               widthWithScroll;
+           outer.style.visibility = "hidden";
+           outer.style.width = "100px";
+           outer.style.msOverflowStyle = "scrollbar";
+
+           document.body.appendChild(outer);
+
+           widthNoScroll = outer.offsetWidth;
+
+           outer.style.overflow = "scroll";
+
+           inner = document.createElement("div");
+           inner.style.width = "100%";
+           outer.appendChild(inner);
+
+           widthWithScroll = inner.offsetWidth;
+           outer.parentNode.removeChild(outer);
+           return widthNoScroll - widthWithScroll;
+       }
+       return 0;
+   }
+
+    function _isFixedHeaded() {
+        return ( $headerFixed.length > 0 );
+    }
+
+    function smartSort(A, B) {
+      if ( isNaN(A) || isNaN(B) ) {
+
+        if( A  < B ) {
+          return -1;
+        }
+
+        if( A > B ) {
+          return 1;
+        }
+      } else {
+
+        if(Number(A) < Number(B)) {
+          return -1;
+        }
+
+        if(Number(A) > Number(B)) {
+          return 1;
+        }
+      }
+      return 0;
+    }
+
+    function sortTableBy( columnIndex ) {
+      var rows = $this.find('tbody tr');
+
+      rows.sort(function(a, b) {
+
+        var A = $(a).children('td').eq(columnIndex).text().toUpperCase(),
+            B = $(b).children('td').eq(columnIndex).text().toUpperCase();
+
+        return smartSort(A, B);
+
+      });
+
+      $this.find('tbody tr').remove();
+      $this.find('tbody').append(rows);
+
+      if ( _isFixedHeaded() ) {
+        $headerFixed.find('#arrowUp-sortingBy').remove();
+        $headerFixed.find('thead th').eq(columnIndex).append(_getArrowUp());
+      } else {
+        $this.find('#arrowUp-sortingBy').remove();
+        $this.find('thead th').eq(columnIndex).append(_getArrowUp());
+      }
+    }
+
     function _resizeFixedHeader() {
-      $headerFixed.css('width', $this.width());
+    	$headerFixed.css('width', $scrollableFather.width() - _getScrollbarWidth());
         if ( $this.find("th").length > 0 ) {
-          var olderHeader = $this.find("th");
+        	var olderHeader = $this.find("th");
 
            $headerFixed.find('th').each( function (index) {
-             $(this).css('width', $(olderHeader[index]).css('width'));
+        	   $(this).css('width', $(olderHeader[index]).css('width'));
            });
 
            $this.find("thead").remove();
@@ -25,11 +103,13 @@
         var rows = $this.children('tbody').children('tr'),
         easyTableHeaders = $headerFixed.find('th');
 
-      $(rows).each( function () {
-        $(this).children('td').each( function (index) {
-          $(this).css('width', $(easyTableHeaders[index]).css('width'));
-        });
-      });
+	    $(rows).each( function () {
+	 	   $(this).children('td').each( function (index) {
+	 		   $(this).css('width', $(easyTableHeaders[index]).css('width'));
+	 	   });
+	    });
+
+
     }
 
     function _fixedHeader() {
@@ -79,20 +159,25 @@
         return $newRow;
     }
 
-    function _isFixedHeaded() {
-        return ( $headerFixed.length > 0 );
-    }
+
+
+
 
     function _editRowContent() {
         var $row = $(this),
-            $input = $('<input>');
-        $input.val( $(this).html() );
-        $input.css('width', $row.css('width'));
+            $textArea = $('<textarea>');
+
+        $textArea.val( $(this).html() );
+
         $row.empty();
-        $row.append($input);
+        $textArea.css('width', $row.width());
+        $textArea.css('height', $row.height());
+        $textArea.css('resize', 'none');
+        $row.append($textArea);
+
         $row.off();
-        $input.focus();
-        $input.focusout( function () {
+        $textArea.focus();
+        $textArea.focusout( function () {
           $row.html( $(this).val() );
           $row.dblclick(_editRowContent);
 
@@ -102,6 +187,18 @@
 
         });
     };
+
+    function _getArrowUp() {
+      var $div = $('<div>');
+      $div.css('width', 0);
+      $div.css('height', 0);
+      $div.css('border-left', '8px solid transparent');
+      $div.css('border-right', '8px solid transparent');
+      $div.css('border-bottom', '8px solid');
+      $div.css('float', 'right');
+      $div.attr('id', 'arrowUp-sortingBy');
+      return $div;
+    }
 
     switch ( action ) {
 
@@ -183,6 +280,10 @@
                 $(this).off();
             });
           }
+        break;
+
+        case 'sort':
+            sortTableBy(opts.column);
         break;
     }
 
