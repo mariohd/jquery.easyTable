@@ -11,24 +11,28 @@ How does it work...
 ==============
 This plugin don't have any default action, so it will depend on the parameter while calling the method.
 
-The available actions are : `fixedHead`, `undoFixedHead`, `addRow`, `editRowContent`, `removeRow`, `removeAllRows`.
+The available actions are : `fixedHead`, `undoFixedHead`, `addRow`, `editRowContent`, `removeRow`, `removeAllRows`, 'sort'.
 
 Some actions also need other parameters to do his jobs.
 ```
-    Actions usage parameters
+        Action
+          └── paramenters
+
         ├── fixedHead
         ├── undoFixedHead
         ├── addRow
         |   ├── columnsValues
-        │   ├── { columnsNames }  
-        |   └── { columnsIDs }
+        │   ├── columnsNames  
+        |   └── columnsIDs
         ├── editRowContent
         |   └── edit
         ├── removeRow
         │   └── indexes
-        └── removeAllRows
+        ├── removeAllRows
+        └── sort
+            └── column
+
 ```
-Those with { paramenterName } are optional to the action.
 
 How to Apply the plugin?
 ================
