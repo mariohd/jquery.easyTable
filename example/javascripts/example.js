@@ -80,7 +80,6 @@ $(document).ready( function() {
           $('#easyTable-example').easyTable( 'removeAllRows', { afterRemoveAll: function(table) {  alert('table has now: '  + table.find('tbody tr').length  + ' rows') }  } );
         },
     1500);
-
   });
 
   $('#editRowContent').click( function () {
@@ -88,6 +87,17 @@ $(document).ready( function() {
     $('#easyTable-example').easyTable('editRowContent', { edit: true });
   });
 
+
+  $('#sortFirstColumnOfTheTable').click( function () {
+    goToTable();
+    tableUp();
+    setTimeout(
+      function ()
+        {
+          $('#easyTable-example').easyTable('sort', {column: 0});
+        },
+    1500);
+  });
 });
 
 

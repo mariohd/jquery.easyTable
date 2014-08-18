@@ -320,6 +320,27 @@
           <button id="removeAllRowsFromTable">remove all</button>
         </div>
 
+        <h2 id="sortRows">Sorting Rows</h2>
+        <p>The main porpouse of the method is to sort the rows by a column. </p>
+
+        <table class="tableParameters" cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="headerParameters">Aditional Parameters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="contentParameters">column</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>To execute jquery.easyTable function for sort all rows by a column, we need to run the following command:</p>
+        <div class="textBox centered roundedCorner">
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable('sort', {column: 0});</div>
+          <button id="sortFirstColumnOfTheTable">sort first column</button>
+        </div>
+        <p>The column count begins at 0 and the last is the quantity of columns - 1.</p>
         <h1>Events callbacks</h1>
         <p>jQuery.easyTable accept some callback functions for some methods. There are 3 moments that they will be executed: before starts the execution, in the middle of execution and after the method has completly executed.</p>
 
