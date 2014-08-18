@@ -40,11 +40,14 @@ This plugin uses jQuery, one of the most important javascript's library.</p>
 
 <p>This plugin don't have any default action, so it will depend on the parameter while calling the method.</p>
 
-<p>The available actions are : <code>fixedHead</code>, <code>undoFixedHead</code>, <code>addRow</code>, <code>editRowContent</code>, <code>removeRow</code>, <code>removeAllRows</code>.</p>
+<p>The available actions are : <code>fixedHead</code>, <code>undoFixedHead</code>, <code>addRow</code>, <code>editRowContent</code>, <code>removeRow</code>, <code>removeAllRows</code>, <code>sort</code>.</p>
 
 <p>Some actions also need other parameters to do his jobs.</p>
 
-<pre><code>    Actions usage parameters
+<pre><code>
+        action
+          └── parameters
+
         ├── fixedHead
         ├── undoFixedHead
         ├── addRow
@@ -55,7 +58,9 @@ This plugin uses jQuery, one of the most important javascript's library.</p>
         |   └── edit
         ├── removeRow
         │   └── indexes
-        └── removeAllRows
+        ├── removeAllRows
+        └── sort
+            └── column
 </code></pre>
 
 <p>Those with { paramenterName } are optional to the action.</p>
