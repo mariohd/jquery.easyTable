@@ -16,7 +16,7 @@ $(document).ready( function() {
     setTimeout(
       function ()
         {
-          $('#easyTable-example').easyTable( 'addRow' ,{ columnsValues: ['You can', 'put some', 'HTML', 'Tags', '<input type="checkbox">' ]} );
+          $('#easyTable-example').easyTable( 'addRow' ,{ columnsValues: ['You can', 'put some', 'HTML', 'Tags', '<input type="checkbox">' , '15%']} );
           tableDown();
         },
     1500);
