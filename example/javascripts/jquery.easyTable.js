@@ -14,17 +14,23 @@
     thead = element.getElementsByTagName('thead').item(0) || dummyTable.getElementsByTagName('thead').item(0),
     headers = thead.getElementsByTagName('th'),
     tbody = element.getElementsByTagName('tbody').item(0),
-    rows = tbody.getElementsByTagName('tr');
+    rows = element.rows.toArray().splice(0,1);
 
   function _fixTableHeader() {
     if (! dummyTable) {
-      element.removeChild(thead);
+      var dummyRowHead, headRow = thead.getElementsByTagName('th').toArray(), width;
       dummyTable = element.cloneNode(true);
-      dummyTable.appendChild(thead);
-      dummyTable.removeChild(dummyTable.getElementsByTagName('tbody').item(0));
       dummyTable.id = dummyTable.id + "-fixed";
+      dummyRowHead = dummyTable.getElementsByTagName('tr').item(0);
+      for (var index in headRow) {
+        width = (headRow[index].offsetWidth/tbody.offsetWidth) * 100 + '%';
+        dummyRowHead.cells[index].style.width = width;
+        rows[0].cells[index].style.width = width;
+      }
+      dummyTable.removeChild(dummyTable.getElementsByTagName('tbody').item(0));
+      element.removeChild(thead);
       element.parentNode.parentNode.insertBefore(dummyTable, element.parentNode);
-      _fixColumnsWidths();
+      //_fixColumnsWidths();
     }
   }
 
@@ -44,7 +50,7 @@
 
   function _fixColumnsWidths() {
     var fisrtRow = rows.toArray()[0],
-    fisrtLineData = fisrtRow.getElementsByTagName('td').toArray(),
+    fisrtLineData = fisrtRow.cells.toArray(),
     AHeaders = headers.toArray();
     for (var index in AHeaders ) {
       if (AHeaders.hasOwnProperty(index)) {
