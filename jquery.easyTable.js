@@ -23,7 +23,7 @@
         dummyTable.appendChild(thead);
         dummyTable.removeChild(dummyTable.tBodies.item(0));
         dummyTable.id += "-fixed";
-        dummyTable.style.width = element.offsetWidth + 'px';
+		dummyTable.style.width = element.offsetWidth + 'px';
         element.parentNode.parentNode.insertBefore(dummyTable, element.parentNode);
         _fixColumnsWidths();
       }
@@ -35,7 +35,7 @@
       for (var index in Aheaders) {
         if (Aheaders.hasOwnProperty(index)) {
           Aheaders[index].style.width = "";
-          rows[0].cells[index].style.width = '';
+		  rows[0].cells[index].style.width = '';
         }
       }
       element.insertBefore(thead, tbody);
@@ -44,35 +44,35 @@
   }
 
   function _fixColumnsWidths() {
-    if(dummyTable) {
-      var fisrtRow = rows[0],
-      fisrtLineData = fisrtRow.cells,
-      AHeaders = headers.toArray(),
-      pWidth;
-      for (var index in AHeaders ) {
-        if (AHeaders.hasOwnProperty(index)) {
-          pWidth = (fisrtLineData[index].offsetWidth/tbody.offsetWidth) * 100 + '%';
-          AHeaders[index].style.width = pWidth;
-          rows[0].cells[index].style.width = pWidth;
-        }
-      }
-    }
+	  if(dummyTable) {
+		var fisrtRow = rows[0],
+		fisrtLineData = fisrtRow.cells,
+		AHeaders = headers.toArray(),
+		pWidth;
+		for (var index in AHeaders ) {
+		  if (AHeaders.hasOwnProperty(index)) {
+			pWidth = (fisrtLineData[index].offsetWidth/tbody.offsetWidth) * 100 + '%';
+			AHeaders[index].style.width = pWidth;
+			rows[0].cells[index].style.width = pWidth;
+		  }
+		}
+	}
   }
 
   function _addNewRow() {
     var newRow = document.createElement('tr'),
-    values = opts.values || opts.columnsValues,
+    contents = opts.contents || opts.columnsValues,
     ids = opts.ids || opts.columnsIDs,
     names = opts.names || opts.ColumnsNames,
     td;
-    values.forEach(function (value, index) {
+    contents.forEach(function (value, index) {
       td = document.createElement('td');
       td.innerHTML = value;
       if (ids && ids[index]) {
         td.id = ids[index];
       }
       if (names && names[index]) {
-        td.setAttribute('name',names[index]);
+        td.setAttribute('name', names[index]);
       }
       newRow.appendChild(td);
     });
@@ -107,7 +107,7 @@
     this.innerHTML = "";
     this.ondblclick = undefined;
     this.appendChild(textArea);
-	 _fixColumnsWidths();
+	_fixColumnsWidths();
   }
 
   function _removeTextArea() {
@@ -125,7 +125,7 @@
 		return Number(a) - Number(b);
 	  }).reverse();
       opts.indexes.forEach(function (index) {
-        rows[index].parentNode.removeChild(rows[index]);
+        tbody.deleteRow(index);
       });
     }
   }
@@ -133,7 +133,7 @@
   function _removeAllRows() {
     opts.indexes = [];
     for (var index = 0; index < rows.length ; index++) {
-      opts.indexes.push(Number(index));
+      opts.indexes.push(index);
     }
     _removeRow();
   }
@@ -143,11 +143,11 @@
       var ordered = rows.toArray().sort(function(a, b) {
         var A = a.cells.item(opts.column).innerHTML,
 			B = b.cells.item(opts.column).innerHTML;
-        if (opts.replacement) {
-          A = A.replace(opts.replacement.from, opts.replacement.to || '');
-          B = B.replace(opts.replacement.from, opts.replacement.to || '');
+        if (opts.from) {
+          A = A.replace(opts.from, opts.to);
+          B = B.replace(opts.from, opts.to);
         }
-        return smartSort(A, B);
+        return opts.order === 'asc' ? smartSort(A, B) : smartSort(B, A);
       }),
       row;
       while (row = rows.toArray().shift()) {
@@ -188,10 +188,12 @@
 
     case 'removeRow':
       _removeRow();
+	  _fixColumnsWidths();
       break;
 
     case 'removeAllRows':
       _removeAllRows();
+	  _fixColumnsWidths();
       break;
 
     case 'sort':
@@ -203,12 +205,14 @@
 
   $.fn.easyTable.defaults = {
     indexes: null,
-    values: null,
+    content: null,
     names: null,
     ids: null,
     edit: false,
     column: null,
-    replacement: null
+    from: null,
+    to: '',
+    order: 'asc'
   };
 
 })(jQuery);
