@@ -51,16 +51,19 @@ This plugin uses jQuery, one of the most important javascript's library.</p>
         ├── fixedHead
         ├── undoFixedHead
         ├── addRow
-        |   ├── columnsValues
-        │   ├── { columnsNames }
-        |   └── { columnsIDs }
+        |   ├── values
+        │   ├── { names }
+        |   └── { ids }
         ├── editRowContent
-        |   └── edit
         ├── removeRow
         │   └── indexes
         ├── removeAllRows
         └── sort
-            └── column
+            ├── column
+            ├── { from }
+            ├── { to }
+            └── { orderBy }
+
 </code></pre>
 
 <p>Those with { paramenterName } are optional to the action.</p>

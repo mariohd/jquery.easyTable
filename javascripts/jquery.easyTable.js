@@ -1,291 +1,246 @@
-
+/*globals HTMLCollection, jQuery*/
 (function ($) {
-    "use strict";
-    $.fn.easyTable = function( action , options ) {
+  "use strict";
+  [HTMLCollection, NodeList].forEach(function (collection) {
+    collection.prototype.toArray = function () {
+      return Array.prototype.slice.call(this);
+    };
+  });
+
+  $.fn.easyTable = function ( action, options ) {
     var opts = $.extend( {}, $.fn.easyTable.defaults, options ),
-    $this = $(this),
-    $scrollableFather = $this.parents().filter( function() {
-        return $(this).css('overflow') === 'auto';
-    }),
-    $headerFixed = $("#" + $this.attr('id') + '-fixedClone'),
-    $tr;
-    
-    function _getScrollbarWidth() {
-       if ( $this.height() > $scrollableFather.height() ) {
-           var outer = document.createElement("div"),
-               widthNoScroll,
-               inner,
-               widthWithScroll;
-           outer.style.visibility = "hidden";
-           outer.style.width = "100px";
-           outer.style.msOverflowStyle = "scrollbar";
+    element = this.get(0),
+    dummyTable = document.getElementById(element.id + "-fixed"),
+    thead = element.tHead || dummyTable.tHead,
+    headers = thead.rows.item(0).cells,
+    tbody = element.tBodies.item(0),
+    rows = tbody.rows;
 
-           document.body.appendChild(outer);
+    function _fixTableHeader() {
+      if (! dummyTable) {
+        element.removeChild(thead);
+        dummyTable = element.cloneNode(true);
+        dummyTable.appendChild(thead);
+        dummyTable.removeChild(dummyTable.tBodies.item(0));
+        dummyTable.id += "-fixed";
+        dummyTable.style.width = element.offsetWidth + 'px';
+        element.parentNode.parentNode.insertBefore(dummyTable, element.parentNode);
+        _fixColumnsWidths();
+      }
+    }
 
-           widthNoScroll = outer.offsetWidth;
+    function _unfixTableHeader() {
+      if (dummyTable) {
+        var Aheaders = headers.toArray();
+        for (var index in Aheaders) {
+          if (Aheaders.hasOwnProperty(index)) {
+            Aheaders[index].style.width = rows[0].cells[index].style.width =  "";
+          }
+        }
+        element.insertBefore(thead, tbody);
+        dummyTable.parentNode.removeChild(dummyTable);
+      }
+    }
 
-           outer.style.overflow = "scroll";
+    function _fixColumnsWidths() {
+      if(dummyTable) {
+        var fisrtRow = rows[0],
+        fisrtLineData = fisrtRow.cells,
+        AHeaders = headers.toArray(),
+        pWidth;
+        for (var index in AHeaders ) {
+          if (AHeaders.hasOwnProperty(index)) {
+            pWidth = (fisrtLineData[index].offsetWidth/tbody.offsetWidth) * 100 + '%';
+            AHeaders[index].style.width = pWidth;
+            rows[0].cells[index].style.width = pWidth;
+          }
+        }
+      }
+    }
 
-           inner = document.createElement("div");
-           inner.style.width = "100%";
-           outer.appendChild(inner);
+    function _addNewRow() {
+      if (opts.beforeAdd) {
+        opts.beforeAdd($(element), undefined);
+      }
 
-           widthWithScroll = inner.offsetWidth;
-           outer.parentNode.removeChild(outer);
-           return widthNoScroll - widthWithScroll;
-       }
-       return 0;
-   }
+      var newRow = document.createElement('tr'),
+      contents = opts.contents || opts.columnsValues,
+      ids = opts.ids || opts.columnsIDs,
+      names = opts.names || opts.ColumnsNames,
+      td;
+      contents.forEach(function (value, index) {
+        td = document.createElement('td');
+        td.innerHTML = value;
+        if (ids && ids[index]) {
+          td.id = ids[index];
+        }
+        if (names && names[index]) {
+          td.setAttribute('name', names[index]);
+        }
+        newRow.appendChild(td);
+      });
 
-    function _isFixedHeaded() {
-        return ( $headerFixed.length > 0 );
+      if (opts.animateAdd) {
+        opts.animateAdd($(element), $(newRow));
+      }
+
+      tbody.appendChild(newRow);
+
+      if (opts.afterAdd) {
+        opts.afterAdd($(element), $(newRow));
+      }
+    }
+
+    function _toogleEditContent() {
+      $.fn.easyTable.defaults.edit = ! $.fn.easyTable.defaults.edit;
+      if ($.fn.easyTable.defaults.edit) {
+        rows.toArray().forEach(function (row) {
+          row.getElementsByTagName('td').toArray().forEach( function (data) {
+            data.ondblclick  = _editContent;
+          });
+        });
+      } else {
+        rows.toArray().forEach(function (row) {
+          row.getElementsByTagName('td').toArray().forEach( function (data) {
+            data.ondblclick  = undefined;
+          });
+        });
+      }
+    }
+
+    function _editContent() {
+      /*jshint validthis: true */
+      var textArea = document.createElement('textarea');
+      textArea.value = this.innerHTML;
+      textArea.style.width = this.style.width + 'px';
+      textArea.style.height = this.style.height + 'px';
+      textArea.style.resize = 'none';
+      textArea.onblur = _removeTextArea;
+      this.innerHTML = "";
+      this.ondblclick = undefined;
+      this.appendChild(textArea);
+      _fixColumnsWidths();
+    }
+
+    function _removeTextArea() {
+      /*jshint validthis: true */
+      var parentNode = this.parentNode;
+      this.parentNode.removeChild(this);
+      parentNode.innerHTML = this.value;
+      parentNode.ondblclick = _editContent;
+      _fixColumnsWidths();
+    }
+
+    function _removeRow() {
+      if (opts.beforeRemove) {
+        opts.beforeRemove($(element));
+      }
+
+      if (opts.indexes) {
+        opts.indexes.sort(function (a, b) {
+          return Number(a) - Number(b);
+        }).reverse();
+        opts.indexes.forEach(function (index) {
+          tbody.deleteRow(index);
+        });
+      }
+
+      if (opts.afterRemove) {
+        opts.afterRemove($(element));
+      }
+    }
+
+    function _removeAllRows() {
+      if (opts.beforeRemoveAll) {
+        opts.beforeRemoveAll($(element));
+      }
+
+      opts.indexes = [];
+      for (var index = 0; index < rows.length ; index++) {
+        opts.indexes.push(index);
+      }
+      _removeRow();
+
+      if (opts.afterRemoveAll) {
+        opts.afterRemoveAll($(element));
+      }
+    }
+
+    function _sortByColumn() {
+      if (opts.column === 0 || opts.column) {
+        var ordered = rows.toArray().sort(function(a, b) {
+          var A = a.cells.item(opts.column).innerHTML,
+          B = b.cells.item(opts.column).innerHTML;
+          if (opts.from) {
+            A = A.replace(opts.from, opts.to);
+            B = B.replace(opts.from, opts.to);
+          }
+          return opts.order === 'asc' ? smartSort(A, B) : smartSort(B, A);
+        }),
+        row;
+        while (row = rows.toArray().shift()) {
+          tbody.removeChild(row);
+        }
+        while ( row = ordered.shift()) {
+          tbody.appendChild(row);
+        }
+      }
     }
 
     function smartSort(A, B) {
       if ( isNaN(A) || isNaN(B) ) {
-
-        if( A  < B ) {
-          return -1;
-        }
-
-        if( A > B ) {
-          return 1;
-        }
+        return A.localeCompare(B);
       } else {
-
-        if(Number(A) < Number(B)) {
-          return -1;
-        }
-
-        if(Number(A) > Number(B)) {
-          return 1;
-        }
+        return Number(A) - Number(B);
       }
-      return 0;
-    }
-
-    function sortTableBy( columnIndex ) {
-      var rows = $this.find('tbody tr');
-
-      rows.sort(function(a, b) {
-
-        var A = $(a).children('td').eq(columnIndex).text().toUpperCase(),
-            B = $(b).children('td').eq(columnIndex).text().toUpperCase();
-
-        return smartSort(A, B);
-
-      });
-
-      $this.find('tbody tr').remove();
-      $this.find('tbody').append(rows);
-
-      if ( _isFixedHeaded() ) {
-        $headerFixed.find('#arrowUp-sortingBy').remove();
-        $headerFixed.find('thead th').eq(columnIndex).append(_getArrowUp());
-      } else {
-        $this.find('#arrowUp-sortingBy').remove();
-        $this.find('thead th').eq(columnIndex).append(_getArrowUp());
-      }
-    }
-
-    function _resizeFixedHeader() {
-    	$headerFixed.css('width', $scrollableFather.width() - _getScrollbarWidth());
-        if ( $this.find("th").length > 0 ) {
-        	var olderHeader = $this.find("th");
-
-           $headerFixed.find('th').each( function (index) {
-        	   $(this).css('width', $(olderHeader[index]).css('width'));
-           });
-
-           $this.find("thead").remove();
-        }
-
-        var rows = $this.children('tbody').children('tr'),
-        easyTableHeaders = $headerFixed.find('th');
-
-	    $(rows).each( function () {
-	 	   $(this).children('td').each( function (index) {
-	 		   $(this).css('width', $(easyTableHeaders[index]).css('width'));
-	 	   });
-	    });
-    }
-
-    function _fixedHeader() {
-        $scrollableFather.wrap('<div id="container-easyTable" />');
-        $headerFixed = $this.clone();
-        $headerFixed.attr('id', $headerFixed.attr('id') + '-fixedClone');
-        $headerFixed.find("tbody").remove().end().addClass("fixedEasyTable").insertBefore($scrollableFather);
-        _resizeFixedHeader();
-    }
-
-    function _removeFixedHeader() {
-        var header = $headerFixed.find('thead'),
-        body = $this.children('tbody');
-        $scrollableFather.unwrap();
-        header.find('th').each( function () {
-            $(this).css('width', '');
-        });
-        header.insertBefore(body);
-        $headerFixed.remove();
-    }
-
-
-
-    function _addRow() {
-        var $newRow = $('<tr>');
-
-        opts.columnsValues.some( function ( columnValue, index ) {
-            var $td = $('<td>');
-            $td.append(columnValue);
-            $newRow.append($td);
-
-            if ( opts.columnsNames[index] !== undefined ) {
-              $td.attr('name', opts.columnsNames[index]);
-            }
-
-            if ( opts.columnsIDs[index] !== undefined ) {
-              $td.attr('id', opts.columnsIDs[index]);
-            }
-        });
-
-        if (typeof opts.animateAdd === 'function') {
-          opts.animateAdd.call( 'undefined' , $this, $newRow );
-        }
-
-        $this.append($newRow);
-
-        return $newRow;
-    }
-
-    function _editRowContent() {
-        var $row = $(this),
-            $textArea = $('<textarea>');
-        $textArea.val( $(this).html() );
-        $row.empty();
-        $textArea.css('width', $row.width());
-        $textArea.css('height', $row.height());
-        $textArea.css('resize', 'none');
-        $row.append($textArea);
-        $row.off();
-        $textArea.focus();
-        $textArea.focusout( function () {
-          $row.html( $(this).val() );
-          $row.dblclick(_editRowContent);
-
-          if ( _isFixedHeaded() ) {
-              _resizeFixedHeader();
-          }
-
-        });
-    };
-
-    function _getArrowUp() {
-      var $div = $('<div>');
-      $div.css('width', 0);
-      $div.css('height', 0);
-      $div.css('border-left', '8px solid transparent');
-      $div.css('border-right', '8px solid transparent');
-      $div.css('border-bottom', '8px solid');
-      $div.css('float', 'right');
-      $div.attr('id', 'arrowUp-sortingBy');
-      return $div;
     }
 
     switch ( action ) {
-
-        case 'fixedHead':
-            if ( ! _isFixedHeaded() ){
-                _fixedHeader();
-                $(window).resize(_resizeFixedHeader);
-            }
+      case 'fixedHead':
+        _fixTableHeader();
         break;
 
         case 'undoFixedHead':
-            if ( _isFixedHeaded() ){
-                _removeFixedHeader();
-                $(window).unbind('resize');
-            }
-        break;
+          _unfixTableHeader();
+          break;
 
         case 'addRow':
-            if (typeof opts.beforeAdd === 'function'){
-                opts.beforeAdd.call( $this );
-            }
+          _addNewRow();
+          break;
 
-            $tr = _addRow();
-            if ( _isFixedHeaded() ) {
-                _resizeFixedHeader();
-            }
-
-            if (typeof opts.afterAdd === 'function'){
-                opts.afterAdd.call( $this, $tr );
-            }
-
-        break;
+        case 'edit':
+        case 'editRowContent':
+          _toogleEditContent();
+          break;
 
         case 'removeRow':
-            if (typeof opts.beforeRemove === 'function'){
-                opts.beforeRemove.call( 'undefined', $this );
-            }
-
-            opts.indexes.sort().reverse();
-            opts.indexes.some( function ( value ) {
-                $this.find('tbody tr')[value].remove();
-            });
-
-            if ( _isFixedHeaded() ) {
-                _resizeFixedHeader();
-            }
-
-            if (typeof opts.afterRemove === 'function'){
-                opts.afterRemove.call('undefined', $this );
-            }
-
-        break;
+          _removeRow();
+          _fixColumnsWidths();
+          break;
 
         case 'removeAllRows':
-            if (typeof opts.beforeRemoveAll === 'function'){
-                opts.beforeRemoveAll.call( 'undefined', $this );
-            }
-
-            $this.find('tbody tr').remove();
-
-            if ( _isFixedHeaded() ) {
-                _resizeFixedHeader();
-            }
-
-            if (typeof opts.afterRemoveAll === 'function'){
-                opts.afterRemoveAll.call( 'undefined', $this );
-            }
-
-        break;
-
-        case 'editRowContent':
-
-          if ( opts.edit === true ) {
-              $this.find('td').each(function () {
-                  $(this).dblclick(_editRowContent);
-              });
-          } else {
-            $this.find('td').each(function () {
-                $(this).off();
-            });
-          }
-        break;
+          _removeAllRows();
+          _fixColumnsWidths();
+          break;
 
         case 'sort':
-            sortTableBy(opts.column);
-        break;
-    }
+          _sortByColumn();
+          break;
+        }
 
-    return this;
+        return this;
   };
 
   $.fn.easyTable.defaults = {
-    indexes: [],
-    columnsValues: [],
-    columnsNames: [],
-    columnsIDs: []
+    indexes: null,
+    content: null,
+    names: null,
+    ids: null,
+    edit: false,
+    column: null,
+    from: null,
+    to: '',
+    order: 'asc'
   };
 
-}(jQuery));
+})(jQuery);
