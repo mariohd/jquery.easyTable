@@ -18,19 +18,21 @@ Some actions also need other parameters to do his jobs.
         Action
           └── parameters
 
-        ├── fixedHead
-        ├── undoFixedHead
-        ├── addRow
-        |   ├── columnsValues
-        │   ├── columnsNames  
-        |   └── columnsIDs
-        ├── editRowContent
-        |   └── edit
-        ├── removeRow
-        │   └── indexes
-        ├── removeAllRows
-        └── sort
-            └── column
+          ├── fixedHead
+          ├── undoFixedHead
+          ├── addRow
+          |   ├── values
+          │   ├── { names }
+          |   └── { ids }
+          ├── editRowContent
+          ├── removeRow
+          │   └── indexes
+          ├── removeAllRows
+          └── sort
+              ├── column
+              ├── { from }
+              ├── { to }
+              └── { orderBy }
 
 ```
 
