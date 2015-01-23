@@ -24,8 +24,7 @@
 
 
   .easyTable thead th {
-    font-size: 25;
-
+    border: 1px solid;
   }
 
   .easyTable tbody tr:nth-child(even){

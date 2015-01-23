@@ -16,7 +16,7 @@ $(document).ready( function() {
     setTimeout(
       function ()
         {
-          $('#easyTable-example').easyTable( 'addRow' ,{ columnsValues: ['You can', 'put some', 'HTML', 'Tags', '<input type="checkbox">' ]} );
+          $('#easyTable-example').easyTable( 'addRow' ,{ columnsValues: ['You can', 'put some', 'HTML', 'Tags', '<input type="checkbox">' , '15%']} );
           tableDown();
         },
     1500);
@@ -52,7 +52,7 @@ $(document).ready( function() {
     setTimeout(
       function ()
         {
-          $('#easyTable-example').easyTable( 'addRow', { columnsValues: ['This row', 'will fade in', 'after', '5 seconds', 'with event call!'], animateAdd: function (table, tr) { tr.fadeIn(5000); } } );
+          $('#easyTable-example').easyTable( 'addRow', { columnsValues: ['This row', 'will fade in', 'after', '5 seconds', 'with event call!', '100%'], animateAdd: function (table, tr) { tr.fadeIn(5000); } } );
           tableDown();
         },
     1500);
@@ -98,6 +98,18 @@ $(document).ready( function() {
         },
     1500);
   });
+  
+  $('#sortReplaceOfTheTable').click(function () {
+	goToTable();
+    tableUp();
+	 setTimeout(
+      function ()
+        {
+          $('#easyTable-example').easyTable('sort', {column: 5, from: /%/g, to: '' });
+        },
+    1500);
+  });
+  
 });
 
 
