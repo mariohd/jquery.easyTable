@@ -362,7 +362,7 @@
 	        <p>An aditional paramenter is set to replace special characters that you don't want to be considered while is comparing. It's structure has 2 attributes <code>from</code> and <code>to</code>.</p>
 	        <div class="textBox centered roundedCorner">
           <div style="font-family: monospace;">$('#easyTable-example').easyTable('sort', {column: 5, from: /%/g, to: '' });</div>
-          <button id="sortFirstColumnOfTheTable">sort first column</button>
+          <button id="sortReplaceOfTheTable">sort first column</button>
         </div>
         <p>The column count begins at 0 and the last is the quantity of columns - 1.</p>
         <h1>Events callbacks</h1>
@@ -392,10 +392,10 @@
         </table>
         <p>To execute jquery.easyTable function for adding rows with event call, we need to run the following command:</p>
         <div class="textBox centered roundedCorner">
-          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow', { columnsValues: ['This row', 'will fade in', 'after', '5 seconds', 'with event call!'], animateAdd: function (table, tr) { tr.fadeIn(5000); } } );</div>
+          <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'addRow', { columnsValues: ['This row', 'will fade in', 'after', '5 seconds', 'with event call!', '100%'], animateAdd: function (table, tr) { tr.fadeIn(5000); } } );</div>
           <button id="addWithEffect">add with visual effect</button>
         </div>
-        <p>Those functions, some of those functions has parameters. The first one is the table itself and the second one, is the row that will be added. <code>'BeforeAdd'</code>, the <code>'tr'</code> parameter is always <code>undefined</code>, since the row don`t exist yet, just added to maintain consistency with the others functions.</p>
+        <p>Some of those functions has parameters. The first one is the table itself and the second one, is the row that will be added. <code>'BeforeAdd'</code>, the <code>'tr'</code> parameter is always <code>undefined</code>, since the row don`t exist yet, just added to maintain consistency with the others functions.</p>
 
         <h2>Remove rows event</h2>
         <p>The <code>'removeRow'</code> method, call this events. They are called before and after the execution of the method.</p>
@@ -442,11 +442,11 @@
           <div style="font-family: monospace;">$('#easyTable-example').easyTable( 'removeAllRows', { afterRemoveAll: function(table) {  alert('table has now: '  + table.find('tbody tr').length  + ' rows') }  } );</div>
           <button id="removeAllWithEffect">remove all rows with callback</button>
         </div>
-        <p>Those functions are called just once, even if the quantity of rows to be removed is more than one.
-        They don't receive any parameters.</p>
-        <p>This plugin is still under development, any help will be appreciated!</p>
-
-        </section>
+        <p>Those functions are called just once, even if the quantity of rows to be removed is more than one.</p>
+		<p>For every row that is removed from table, it will call <code>beforeRemove(table)</code> and <code>afterRemove(table)</code> if they were fulfield with a function.
+		
+		<h3 style="text-align: center; margin-top: 50px;">This plugin is still under development, any help will be appreciated!</h3>
+        </section>		
 
         <aside id="sidebar">
           <a href="" class="button button-demo">

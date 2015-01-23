@@ -34,8 +34,7 @@
         var Aheaders = headers.toArray();
         for (var index in Aheaders) {
           if (Aheaders.hasOwnProperty(index)) {
-            Aheaders[index].style.width = "";
-            rows[0].cells[index].style.width = '';
+            Aheaders[index].style.width = rows[0].cells[index].style.width =  "";
           }
         }
         element.insertBefore(thead, tbody);
@@ -60,6 +59,10 @@
     }
 
     function _addNewRow() {
+      if (opts.beforeAdd) {
+        opts.beforeAdd($(element), undefined);
+      }
+
       var newRow = document.createElement('tr'),
       contents = opts.contents || opts.columnsValues,
       ids = opts.ids || opts.columnsIDs,
@@ -76,7 +79,16 @@
         }
         newRow.appendChild(td);
       });
+
+      if (opts.animateAdd) {
+        opts.animateAdd($(element), $(newRow));
+      }
+
       tbody.appendChild(newRow);
+
+      if (opts.afterAdd) {
+        opts.afterAdd($(element), $(newRow));
+      }
     }
 
     function _toogleEditContent() {
@@ -120,6 +132,10 @@
     }
 
     function _removeRow() {
+      if (opts.beforeRemove) {
+        opts.beforeRemove($(element));
+      }
+
       if (opts.indexes) {
         opts.indexes.sort(function (a, b) {
           return Number(a) - Number(b);
@@ -128,14 +144,26 @@
           tbody.deleteRow(index);
         });
       }
+
+      if (opts.afterRemove) {
+        opts.afterRemove($(element));
+      }
     }
 
     function _removeAllRows() {
+      if (opts.beforeRemoveAll) {
+        opts.beforeRemoveAll($(element));
+      }
+
       opts.indexes = [];
       for (var index = 0; index < rows.length ; index++) {
         opts.indexes.push(index);
       }
       _removeRow();
+
+      if (opts.afterRemoveAll) {
+        opts.afterRemoveAll($(element));
+      }
     }
 
     function _sortByColumn() {
@@ -168,7 +196,6 @@
     }
 
     switch ( action ) {
-
       case 'fixedHead':
         _fixTableHeader();
         break;
@@ -177,43 +204,43 @@
           _unfixTableHeader();
           break;
 
-          case 'addRow':
-            _addNewRow();
-            break;
+        case 'addRow':
+          _addNewRow();
+          break;
 
-            case 'edit':
-              case 'editRowContent':
-                _toogleEditContent();
-                break;
+        case 'edit':
+        case 'editRowContent':
+          _toogleEditContent();
+          break;
 
-                case 'removeRow':
-                  _removeRow();
-                  _fixColumnsWidths();
-                  break;
+        case 'removeRow':
+          _removeRow();
+          _fixColumnsWidths();
+          break;
 
-                  case 'removeAllRows':
-                    _removeAllRows();
-                    _fixColumnsWidths();
-                    break;
+        case 'removeAllRows':
+          _removeAllRows();
+          _fixColumnsWidths();
+          break;
 
-                    case 'sort':
-                      _sortByColumn();
-                      break;
-                    }
-                    return this;
-                  };
+        case 'sort':
+          _sortByColumn();
+          break;
+        }
 
-                  $.fn.easyTable.defaults = {
-                    indexes: null,
-                    content: null,
-                    names: null,
-                    ids: null,
-                    edit: false,
-                    column: null,
-                    from: null,
-                    to: '',
-                    order: 'asc'
-                  };
+        return this;
+  };
 
-                })(jQuery);
-                
+  $.fn.easyTable.defaults = {
+    indexes: null,
+    content: null,
+    names: null,
+    ids: null,
+    edit: false,
+    column: null,
+    from: null,
+    to: '',
+    order: 'asc'
+  };
+
+})(jQuery);
